@@ -2,65 +2,71 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sistema de Supervisión CAR</title>
 <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 <style>
-:root{--blue:#1d4ed8;--bg:#f5f7fb;--card:#fff;--border:#d9dee8;--text:#172033;--muted:#64748b;--soft:#eef2f7;--danger:#b91c1c}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,sans-serif;color:var(--text)}
+:root{--blue:#1d4ed8;--text:#172033;--muted:#64748b;--border:#d7dce5;--soft:#f8fafc;--danger:#b91c1c}
+*{box-sizing:border-box}body{margin:0;background:#f5f7fb;color:var(--text);font-family:Arial,Helvetica,sans-serif}
 header{background:#fff;border-bottom:1px solid var(--border);padding:16px 24px}
-header h1{margin:0;font-size:21px}header p{margin:4px 0 0;color:var(--muted);font-size:13px}
-main{max-width:1200px;margin:20px auto;padding:0 16px}.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.field label{display:block;font-size:12px;font-weight:bold;margin-bottom:5px}
-input,textarea,select{width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;font-size:14px;background:#fff}textarea{min-height:90px}
-.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.btn{border:1px solid var(--border);background:#fff;padding:10px 14px;border-radius:8px;font-weight:bold;cursor:pointer}.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}.btn.danger{color:var(--danger)}
-.status{margin-left:auto;font-size:13px;color:var(--muted)}.notice{background:#eff6ff;border:1px solid #bfdbfe;border-radius:9px;padding:10px;font-size:13px;margin-top:12px}
-.hidden{display:none!important}.help{font-size:12px;color:var(--muted)}
-.searchbar{display:grid;grid-template-columns:1fr auto;gap:8px}.results{display:grid;gap:8px;margin-top:12px}.car-result{border:1px solid var(--border);background:#fff;border-radius:10px;padding:12px;display:flex;align-items:center;justify-content:space-between;gap:10px}.meta{font-size:12px;color:var(--muted)}
-.fichas{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.ficha{border:1px solid var(--border);border-radius:12px;padding:15px;min-height:160px;display:flex;flex-direction:column;background:#fff}.ficha .num{font-size:11px;color:var(--muted);margin-bottom:8px}.ficha h3{margin:0 0 8px;font-size:16px}.ficha button{margin-top:auto}
-.car-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.badge{display:inline-block;padding:5px 8px;background:#eef2ff;border-radius:999px;font-size:11px;margin-right:5px}
-.children{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.child{border:1px solid var(--border);border-radius:9px;padding:12px;background:#fafbfc}.child h3{font-size:14px;margin:0 0 9px}.childgrid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px}
-.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:10px}table{border-collapse:collapse;width:100%;min-width:1100px}th,td{border-bottom:1px solid var(--border);padding:8px;text-align:center;font-size:12px}th{background:#eef2f7;position:sticky;top:0}th:first-child,td:first-child{text-align:left;min-width:310px;position:sticky;left:0;background:#fff;z-index:1}.cat td{background:#e9eef5!important;font-weight:bold;text-transform:uppercase;color:#475569}.choice{display:flex;justify-content:center;gap:4px}.choice button{font-size:11px;padding:6px 7px;border:1px solid var(--border);background:#fff;border-radius:6px;cursor:pointer}.choice button.active{border-color:var(--blue);background:#eff6ff;color:var(--blue);font-weight:bold}
-.record{display:grid;grid-template-columns:150px 1fr 100px 120px 70px;gap:8px;align-items:center;padding:8px 0;border-top:1px solid #ddd;font-size:12px}.record:first-child{border-top:0}
-.admin-list{margin-top:12px;border:1px solid var(--border);border-radius:9px;overflow:auto}.admin-row{display:grid;grid-template-columns:120px 1fr 100px 90px;gap:8px;padding:8px;border-top:1px solid #ddd;align-items:center;font-size:12px}.admin-row:first-child{border-top:0}
-.import-list{display:grid;gap:7px;margin-top:8px}.import-item{padding:8px;border:1px solid var(--border);border-radius:7px;background:#fff}
-@media(max-width:800px){.grid,.children,.fichas{grid-template-columns:1fr}.childgrid{grid-template-columns:1fr}.searchbar{grid-template-columns:1fr}.car-result{flex-direction:column;align-items:flex-start}.record,.admin-row{grid-template-columns:1fr}.status{width:100%;margin:0}}
-@media print{header,.toolbar,.notice,#homePage,#carPage,#adminPage,.import-list{display:none!important}.card{border:0}}
+header h1{margin:0;font-size:22px}header p{margin:4px 0 0;color:var(--muted);font-size:12px}
+main{max-width:1200px;margin:18px auto;padding:0 14px}.hidden{display:none!important}
+.topbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.btn{border:1px solid #aab2c0;background:#fff;border-radius:7px;padding:9px 12px;cursor:pointer;font-weight:600}.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}.btn.danger{color:var(--danger)}
+.status{margin-left:auto;color:var(--muted);font-size:12px}
+.card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px}.card h2{margin:0 0 10px;font-size:18px}.small{font-size:12px;color:var(--muted)}
+.searchrow{display:grid;grid-template-columns:1fr auto;gap:8px}.searchrow input,.field input,.field textarea,.field select{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:7px;font:inherit}
+.results{margin-top:10px;display:grid;gap:8px}.car-result{border:1px solid var(--border);border-radius:9px;padding:12px;display:flex;justify-content:space-between;gap:12px;align-items:center;background:#fff}.car-result .meta{color:var(--muted);font-size:12px}
+.crumb{font-size:12px;color:var(--muted);cursor:pointer}.car-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}.badges{display:flex;gap:7px;flex-wrap:wrap}.badge{padding:5px 8px;background:#eef2ff;border-radius:999px;font-size:11px}
+.fichas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.ficha{border:1px solid var(--border);border-radius:12px;padding:15px;background:#fff;min-height:155px;display:flex;flex-direction:column}.ficha h3{margin:0 0 7px;font-size:16px}.ficha .num{font-size:11px;color:var(--muted);margin-bottom:10px}.ficha button{margin-top:auto}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.field label{display:block;font-size:12px;font-weight:700;margin-bottom:5px}
+.children{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.child{border:1px solid var(--border);border-radius:8px;padding:10px;background:var(--soft)}.child h3{margin:0 0 8px;font-size:13px}.childgrid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px}
+.tablewrap{overflow:auto;border:1px solid var(--border);border-radius:8px}table{border-collapse:collapse;width:100%;min-width:1120px}th,td{border-bottom:1px solid #cfd5dd;border-right:1px solid #cfd5dd;padding:5px;font-size:11px;text-align:center}th{background:#e8ebef}th:first-child,td:first-child{text-align:left;min-width:315px;position:sticky;left:0;background:#fff;z-index:1}tr.cat td{background:#eef2f6;font-weight:700;text-transform:uppercase;text-align:center}
+.ans{display:flex;justify-content:center}.ans button{width:28px;height:26px;border:0;background:#f1f5f9;cursor:pointer;font-size:10px}.ans button+button{border-left:1px solid #c7cdd7}.ans button.active{background:#dbeafe;color:#1d4ed8;font-weight:700}.ans button.no.active{background:#fee2e2;color:#991b1b}
+.record{display:grid;grid-template-columns:150px 1fr 110px 70px;gap:8px;align-items:center;border-top:1px solid #ddd;padding:8px 0;font-size:12px}
+.record:first-child{border-top:0}.record button{border:1px solid #888;background:#fff;padding:5px 8px;border-radius:4px;cursor:pointer}
+.adminrow{display:grid;grid-template-columns:130px 1fr 100px 90px;gap:8px;align-items:center;border-top:1px solid #ddd;padding:8px;font-size:12px}
+.adminrow:first-child{border-top:0}.import-list{display:grid;gap:7px;margin-top:8px}.import-item{border:1px solid var(--border);border-radius:7px;padding:8px;font-size:12px}
+@media(max-width:850px){.fichas{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.children{grid-template-columns:1fr}.searchrow{grid-template-columns:1fr}.car-result{flex-direction:column;align-items:flex-start}.record,.adminrow{grid-template-columns:1fr}.status{width:100%;margin-left:0}}
+@media print{header,.topbar,.notice,#homePage,#carPage,.adminPage,.btn{display:none!important}.card{border:0;max-width:none}}
 </style>
 </head>
 <body>
+
 <header>
   <h1>Sistema de Supervisión CAR</h1>
   <p>CAR → instrumento → supervisión → PDF → Google Sheets</p>
 </header>
 
+<div class="topbar" style="max-width:1200px;margin:12px auto 0;padding:0 14px">
+  <button class="btn" id="homeBtn">Inicio</button>
+  <button class="btn" id="adminBtn">Administración</button>
+  <span class="status" id="globalStatus">Listo</span>
+</div>
+
 <main id="homePage">
   <div class="card">
-    <div class="toolbar">
-      <h2 style="margin:0">Buscar CAR</h2>
-      <button class="btn" id="adminBtn">Administración</button>
-    </div>
-    <div class="searchbar">
+    <h2>Buscar CAR</h2>
+    <div class="searchrow">
       <input id="carSearch" placeholder="Código CAR o nombre del hogar...">
       <button class="btn primary" id="searchBtn">Buscar</button>
     </div>
-    <div class="help" style="margin-top:7px">Puedes buscar por código, nombre, departamento, provincia o distrito.</div>
+    <div class="small">Puedes escribir parte del código, nombre, departamento, provincia o distrito.</div>
     <div id="carResults" class="results"></div>
   </div>
 
   <div class="card">
     <h2>Supervisiones recientes</h2>
-    <div id="recentRecords" class="help">Cargando...</div>
+    <div id="recentList" class="small">Cargando...</div>
   </div>
 </main>
 
 <main id="carPage" class="hidden">
   <div class="card">
-    <div class="toolbar"><button class="btn" id="backHome">← Volver</button></div>
-    <div class="car-head">
+    <div class="crumb" id="backHome">← Volver a búsqueda</div>
+    <div class="car-head" style="margin-top:9px">
       <div>
-        <h2 id="carName" style="margin:0"></h2>
-        <div id="carMeta" class="meta" style="margin-top:5px"></div>
+        <h2 id="selectedCarName" style="margin:0"></h2>
+        <div id="selectedCarMeta" class="small"></div>
       </div>
       <button class="btn" id="historyBtn">Ver historial</button>
     </div>
@@ -69,166 +75,2726 @@ input,textarea,select{width:100%;padding:10px;border:1px solid var(--border);bor
   <div class="card">
     <h2>Seleccionar instrumento</h2>
     <div class="fichas">
-      <div class="ficha"><div class="num">01</div><h3>Lista de cotejo de discapacidad</h3><div class="help">Preparado para conectar su PDF.</div><button class="btn" data-ficha="DISCAPACIDAD">Abrir</button></div>
-      <div class="ficha"><div class="num">02</div><h3>NNA 0–3 años</h3><div class="help">PDF dinámico conectado.</div><button class="btn primary" data-ficha="0-3">Abrir</button></div>
-      <div class="ficha"><div class="num">03</div><h3>NNA 4–5 años</h3><div class="help">Preparado para conectar su PDF.</div><button class="btn" data-ficha="4-5">Abrir</button></div>
-      <div class="ficha"><div class="num">04</div><h3>NNA 6–11 años</h3><div class="help">Preparado para conectar su PDF.</div><button class="btn" data-ficha="6-11">Abrir</button></div>
-      <div class="ficha"><div class="num">05</div><h3>NNA 12–17 años</h3><div class="help">Preparado para conectar su PDF.</div><button class="btn" data-ficha="12-17">Abrir</button></div>
+      <div class="ficha"><div class="num">01</div><h3>Lista de cotejo de discapacidad</h3><div class="small">Instrumento de discapacidad.</div><button class="btn" data-ficha="DISCAPACIDAD">Abrir</button></div>
+      <div class="ficha"><div class="num">02</div><h3>NNA 0–3 años</h3><div class="small">Importación PDF dinámica habilitada.</div><button class="btn primary" data-ficha="0-3">Abrir</button></div>
+      <div class="ficha"><div class="num">03</div><h3>NNA 4–5 años</h3><div class="small">Pendiente de mapear su PDF.</div><button class="btn" data-ficha="4-5">Abrir</button></div>
+      <div class="ficha"><div class="num">04</div><h3>NNA 6–11 años</h3><div class="small">Pendiente de mapear su PDF.</div><button class="btn" data-ficha="6-11">Abrir</button></div>
+      <div class="ficha"><div class="num">05</div><h3>NNA 12–17 años</h3><div class="small">Pendiente de mapear su PDF.</div><button class="btn" data-ficha="12-17">Abrir</button></div>
     </div>
   </div>
 </main>
 
 <main id="fichaPage" class="hidden">
+
   <div class="card">
-    <div class="toolbar"><button class="btn" id="backCar">← Volver al CAR</button></div>
-    <h2 id="fichaTitle"></h2>
-    <span class="badge" id="carBadge"></span><span class="badge" id="visitBadge"></span>
+    <div class="crumb" id="backCar">← Volver al CAR</div>
+    <h2 id="fichaTitle" style="margin-top:9px"></h2>
+    <div class="badges">
+      <span class="badge" id="carBadge"></span>
+      <span class="badge" id="visitBadge"></span>
+    </div>
   </div>
 
-  <div id="pendingPage" class="card hidden">
+  <div id="pendingFichas" class="card hidden">
     <h2>Instrumento preparado</h2>
-    <p class="help">Para activar la importación automática de este instrumento necesito su PDF dinámico real.</p>
+    <div class="small">La ficha está creada en la plataforma. Para importar automáticamente su PDF necesito el PDF dinámico real de ese instrumento.</div>
   </div>
 
-  <section id="form03" class="hidden">
+  <div id="ficha03" class="hidden">
+
     <div class="card">
-      <h2>Cargar PDF</h2>
-      <p class="help">Selecciona uno o varios PDF dinámicos de la misma visita. El sistema los lee por nombre de campo y no por posición.</p>
-      <div class="toolbar">
+      <h2>Cargar PDF dinámico</h2>
+      <div class="small">Puedes seleccionar una o varias hojas PDF pertenecientes a la misma visita.</div>
+
+      <div class="topbar" style="margin-top:10px">
         <button class="btn primary" id="pdfBtn">Cargar PDF</button>
-        <input id="pdfInput" class="hidden" type="file" multiple accept=".pdf,application/pdf">
+        <input id="pdfInput" class="hidden" type="file" accept=".pdf,application/pdf" multiple>
         <button class="btn" id="newVisitBtn">Nueva visita</button>
-        <span id="importStatus" class="status"></span>
+        <span class="status" id="importStatus"></span>
       </div>
+
       <div id="importList" class="import-list"></div>
     </div>
 
     <div class="card">
       <h2>Datos de la supervisión</h2>
+
       <div class="grid">
-        <div class="field"><label>Nombre del hogar</label><input id="hogar"></div>
-        <div class="field"><label>Ciudad</label><input id="ciudad"></div>
-        <div class="field"><label>Fecha</label><input id="fecha" type="date"></div>
-        <div class="field"><label>Personal quien brinda información</label><input id="informante"></div>
-        <div class="field"><label>Cargo</label><input id="cargo"></div>
+
+        <div class="field">
+          <label>Nombre del hogar</label>
+          <input id="hogar">
+        </div>
+
+        <div class="field">
+          <label>Ciudad</label>
+          <input id="ciudad">
+        </div>
+
+        <div class="field">
+          <label>Fecha</label>
+          <input id="fecha" type="date">
+        </div>
+
+        <div class="field">
+          <label>Personal quien brinda información</label>
+          <input id="informante">
+        </div>
+
+        <div class="field">
+          <label>Cargo</label>
+          <input id="cargo">
+        </div>
+
       </div>
     </div>
 
     <div class="card">
       <h2>Niñas / niños</h2>
-      <div id="children" class="children"></div>
+      <div class="children" id="children"></div>
     </div>
 
     <div class="card">
-      <h2>Indicadores</h2>
-      <p class="help">Sí, No o vacío.</p>
-      <div id="checklist" class="table-wrap"></div>
-    </div>
+      <h2>Lista de cotejo</h2>
 
-    <div class="card">
-      <h2>Reportes encontrados en la evaluación</h2>
-      <div class="grid">
-        <div class="field"><label>Reporte 1</label><textarea id="rep1"></textarea></div>
-        <div class="field"><label>Reporte 2</label><textarea id="rep2"></textarea></div>
-        <div class="field"><label>Reporte 3</label><textarea id="rep3"></textarea></div>
-        <div class="field"><label>Reporte 4</label><textarea id="rep4"></textarea></div>
+      <div class="small">
+        Cada indicador puede quedar en Sí, No o vacío.
       </div>
-      <div class="toolbar" style="margin-top:10px"><button class="btn primary" id="saveBtn">Registrar / actualizar</button><span id="saveStatus" class="status"></span></div>
+
+      <div class="tablewrap" style="margin-top:8px">
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>Indicador</th>
+              <th colspan="2">N°1</th>
+              <th colspan="2">N°2</th>
+              <th colspan="2">N°3</th>
+              <th colspan="2">N°4</th>
+              <th colspan="2">N°5</th>
+              <th colspan="2">N°6</th>
+              <th colspan="2">N°7</th>
+              <th colspan="2">N°8</th>
+              <th colspan="2">N°9</th>
+              <th colspan="2">N°10</th>
+            </tr>
+
+            <tr>
+              <th></th>
+              <th>SI</th><th>NO</th>
+              <th>SI</th><th>NO</th>
+              <th>SI</th><th>NO</th>
+              <th>SI</th><th>NO</th>
+              <th>SI</th><th>NO</th>
+              <th>SI</th><th>NO</th>
+              <th>SI</th><th>NO</th>
+              <th>SI</th><th>NO</th>
+              <th>SI</th><th>NO</th>
+              <th>SI</th><th>NO</th>
+            </tr>
+
+          </thead>
+
+          <tbody id="checkBody"></tbody>
+
+        </table>
+
+      </div>
     </div>
 
-    <div id="historyPanel" class="card hidden">
-      <h2>Historial del CAR</h2>
-      <div id="historyRecords"></div>
+    <div class="card">
+
+      <h2>Reportes encontrados en la evaluación</h2>
+
+      <div class="grid">
+
+        <div class="field">
+          <label>Reporte 1</label>
+          <textarea id="rep1"></textarea>
+        </div>
+
+        <div class="field">
+          <label>Reporte 2</label>
+          <textarea id="rep2"></textarea>
+        </div>
+
+        <div class="field">
+          <label>Reporte 3</label>
+          <textarea id="rep3"></textarea>
+        </div>
+
+        <div class="field">
+          <label>Reporte 4</label>
+          <textarea id="rep4"></textarea>
+        </div>
+
+      </div>
+
     </div>
-  </section>
+
+    <div class="card">
+
+      <button class="btn primary" id="saveBtn">
+        Registrar / actualizar
+      </button>
+
+      <span class="status" id="saveStatus"></span>
+
+    </div>
+
+    <div class="card hidden" id="history">
+
+      <h2>Historial de este CAR</h2>
+
+      <div id="historyList"></div>
+
+    </div>
+
+  </div>
+
 </main>
 
 <main id="adminPage" class="hidden">
+
   <div class="card">
-    <div class="toolbar"><button class="btn" id="backAdmin">← Volver</button><h2 style="margin:0">Administración</h2></div>
-    <p class="help">Aquí puedes actualizar el directorio, agregar CAR y archivarlos sin borrar su historial.</p>
+    <div class="crumb" id="backAdmin">← Volver</div>
+    <h2 style="margin-top:9px">Administración de CAR</h2>
+    <div class="small">
+      Aquí puedes agregar CAR nuevos y archivar CAR existentes.
+      Archivar no elimina el historial de supervisiones.
+    </div>
   </div>
 
   <div class="card">
+
     <div class="grid">
-      <div class="field"><label>PIN</label><input id="adminPin" type="password"></div>
-      <div class="field"><label>Buscar CAR</label><input id="adminSearch"></div>
+
+      <div class="field">
+        <label>PIN de administrador</label>
+        <input id="adminPin" type="password">
+      </div>
+
+      <div class="field">
+        <label>Buscar CAR</label>
+        <input id="adminSearch" placeholder="Código o nombre">
+      </div>
+
     </div>
-    <div class="toolbar" style="margin-top:10px">
-      <button class="btn primary" id="adminLoad">Cargar CAR</button>
-      <button class="btn" id="masterBtn">Actualizar CAR_MAESTRO desde directorio</button>
+
+    <div class="topbar" style="margin-top:10px">
+      <button class="btn primary" id="adminLoad">
+        Cargar CAR
+      </button>
     </div>
+
   </div>
 
   <div class="card">
+
     <h2>Agregar nuevo CAR</h2>
+
     <div class="grid">
-      <div class="field"><label>Código CAR</label><input id="aId"></div>
-      <div class="field"><label>UBIGEO</label><input id="aUbigeo"></div>
-      <div class="field"><label>Nombre</label><input id="aNombre"></div>
-      <div class="field"><label>Tipo</label><input id="aTipo"></div>
-      <div class="field"><label>Departamento</label><input id="aDep"></div>
-      <div class="field"><label>Provincia</label><input id="aProv"></div>
-      <div class="field"><label>Distrito</label><input id="aDist"></div>
+
+      <div class="field">
+        <label>Código CAR</label>
+        <input id="aId">
+      </div>
+
+      <div class="field">
+        <label>Nombre</label>
+        <input id="aNombre">
+      </div>
+
+      <div class="field">
+        <label>Tipo de CAR</label>
+        <input id="aTipo">
+      </div>
+
+      <div class="field">
+        <label>Departamento</label>
+        <input id="aDep">
+      </div>
+
+      <div class="field">
+        <label>Provincia</label>
+        <input id="aProv">
+      </div>
+
+      <div class="field">
+        <label>Distrito</label>
+        <input id="aDist">
+      </div>
+
     </div>
-    <div class="toolbar" style="margin-top:10px"><button class="btn primary" id="addCarBtn">Agregar CAR</button><span id="adminStatus" class="status"></span></div>
+
+    <div class="topbar" style="margin-top:10px">
+
+      <button class="btn primary" id="addCar">
+        Agregar CAR
+      </button>
+
+      <span class="status" id="adminStatus"></span>
+
+    </div>
+
   </div>
 
   <div class="card">
-    <h2>CAR</h2>
-    <div id="adminList" class="admin-list"></div>
+
+    <h2>CAR registrados</h2>
+
+    <div id="adminList"></div>
+
   </div>
+
 </main>
 
 <script>
-const CONFIG={WEB_APP_URL:"https://script.google.com/macros/s/AKfycbx0pA_ZxK8J4X_qXEQegDHS37_Vcoi2DPXo2a5CetTQenbXFkgisJJeE4G87m4fsbl8Dw/exec"};
-const FICHAS={"DISCAPACIDAD":"Lista de cotejo de discapacidad","0-3":"NNA 0–3 años","4-5":"NNA 4–5 años","6-11":"NNA 6–11 años","12-17":"NNA 12–17 años"};
-const indicators=[
-["FÍSICAS","Talla y peso acorde a la edad cronológica"],["FÍSICAS","Problemas en la piel"],["FÍSICAS","Marcas de cicatrices, cortes, heridas."],["FÍSICAS","Moretones"],["FÍSICAS","Control de esfínteres de acuerdo a la edad correspondiente"],
-["EMOCIONALES","Tristeza"],["EMOCIONALES","Apatía"],["EMOCIONALES","Molesto/molesta"],["EMOCIONALES","Alegría"],["EMOCIONALES","Conductas agresivas/disruptivas"],
-["SOCIALIZACIÓN","Sonríe"],["SOCIALIZACIÓN","Juega con otros niños"],["SOCIALIZACIÓN","Se aísla, se aparta"],["SOCIALIZACIÓN","Busca el contacto con el otro/a"],["SOCIALIZACIÓN","Pide con acto o palabras"],["SOCIALIZACIÓN","Responde con gestos, miradas y sonidos a estímulos externos"],
-["LENGUAJE","Balbucea"],["LENGUAJE","Primeras palabras"],["LENGUAJE","Oración completa"],["LENGUAJE","Mutismo"],
-["INDICADORES PSICOMOTORES","Se sienta, gatea"],["INDICADORES PSICOMOTORES","Primeros pasos, camina"],["INDICADORES PSICOMOTORES","Salta de un pie"],["INDICADORES PSICOMOTORES","Responde a su nombre cuando se le pide"],["INDICADORES PSICOMOTORES","Intenta llamar a otros por su nombre"]
+
+const API =
+  "/api/supervisiones";
+
+
+const FICHAS = {
+
+  "DISCAPACIDAD":
+    "Lista de cotejo de discapacidad",
+
+  "0-3":
+    "NNA 0–3 años",
+
+  "4-5":
+    "NNA 4–5 años",
+
+  "6-11":
+    "NNA 6–11 años",
+
+  "12-17":
+    "NNA 12–17 años"
+
+};
+
+
+// ============================================================
+// INDICADORES 0-3
+// ============================================================
+
+const INDICATORS = [
+
+  [
+    "FISICAS",
+    [
+      "Talla y peso acorde a la edad cronológica",
+      "Problemas en la piel",
+      "Marcas de cicatrices, cortes, heridas.",
+      "Moretones",
+      "Control de esfínteres de acuerdo a la edad correspondiente"
+    ]
+  ],
+
+  [
+    "EMOCIONALES",
+    [
+      "Tristeza",
+      "Apatía",
+      "Molesto/molesta",
+      "Alegría",
+      "Conductas agresivas/disruptivas"
+    ]
+  ],
+
+  [
+    "SOCIALIZACION",
+    [
+      "Sonríe",
+      "Juega con otros niños",
+      "Se aísla, se aparta",
+      "Busca el contacto con el otro/a",
+      "Pide con acto o palabras",
+      "Responde con gestos, miradas y sonidos a estimulos externos"
+    ]
+  ],
+
+  [
+    "LENGUAJE",
+    [
+      "Balbucea",
+      "Primeras palabras",
+      "Oración completa",
+      "Mutismo"
+    ]
+  ],
+
+  [
+    "INDICADORES PSICOMOTORES",
+    [
+      "Se sienta, gatea",
+      "Primeros pasos, camina",
+      "Salta de un pie",
+      "Responde a su nombre cuando se le pide",
+      "Intenta llamar a otros por su nombre"
+    ]
+  ]
+
 ];
-const state={car:null,ficha:null,visitaId:null,id:null,children:Array.from({length:10},()=>({nombre:"",edad:"",sexo:""})),answers:{}};
-const $=id=>document.getElementById(id);
-function show(id){$(id).classList.remove("hidden")}function hide(id){$(id).classList.add("hidden")}
-function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
-function newId(prefix){return prefix+"-"+Math.random().toString(36).slice(2,10).toUpperCase()}
-function today(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
-async function api(action,data={}){
- if(!CONFIG.WEB_APP_URL||CONFIG.WEB_APP_URL.includes("PEGA_AQUI"))throw new Error("Configura WEB_APP_URL en index.html con la URL /exec de Apps Script.");
- const r=await fetch(CONFIG.WEB_APP_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action,...data})});
- const j=await r.json();if(!j.ok)throw new Error(j.error||"Error del servidor");return j;
+
+
+const FLAT_INDICATORS =
+  INDICATORS
+    .flatMap(
+      function(x) {
+        return x[1];
+      }
+    );
+
+
+const state = {
+
+  car: null,
+
+  ficha: null,
+
+  visitaId: null,
+
+  id: null,
+
+  children:
+    Array.from(
+      {
+        length: 10
+      },
+      function() {
+
+        return {
+          nombre: "",
+          edad: "",
+          sexo: ""
+        };
+
+      }
+    ),
+
+  answers: {}
+
+};
+
+
+const $ =
+  function(id) {
+    return document.getElementById(id);
+  };
+
+
+function show(id) {
+  $(id)
+    .classList
+    .remove("hidden");
 }
-async function searchCAR(){
- try{const q=$("carSearch").value.trim();$("carResults").innerHTML="<div class='help'>Buscando...</div>";const r=await api("searchCAR",{query:q});$("carResults").innerHTML=r.cars.length?r.cars.map(c=>`<div class="car-result"><div><b>${esc(c.carId)} — ${esc(c.nombre)}</b><div class="meta">${esc(c.departamento)} · ${esc(c.provincia)} · ${esc(c.distrito)} · ${esc(c.tipo)}</div></div><button class="btn primary" data-car="${esc(c.carId)}">Entrar al CAR</button></div>`).join(""):"<div class='help'>No se encontraron CAR activos.</div>";document.querySelectorAll("[data-car]").forEach(b=>b.onclick=()=>openCAR(b.dataset.car))}catch(e){$("carResults").innerHTML="<div class='help'>Error: "+esc(e.message)+"</div>"}}
-async function openCAR(id){const r=await api("getCAR",{carId:id});state.car=r.car;hide("homePage");hide("fichaPage");hide("adminPage");show("carPage");$("carName").textContent=state.car.nombre;$("carMeta").textContent=`Código ${state.car.carId} · ${state.car.tipo} · ${state.car.departamento} · ${state.car.provincia} · ${state.car.distrito}`}
-function resetForm(){state.id=null;state.children=Array.from({length:10},()=>({nombre:"",edad:"",sexo:""}));state.answers={};["hogar","ciudad","informante","cargo","rep1","rep2","rep3","rep4"].forEach(id=>$(id).value="");$("fecha").value=today();renderChildren();renderChecklist();$("importList").innerHTML="";$("importStatus").textContent="";$("saveStatus").textContent=""}
-function openFicha(code){state.ficha=code;state.visitaId=newId("VIS");hide("carPage");show("fichaPage");hide("historyPanel");$("fichaTitle").textContent=FICHAS[code];$("carBadge").textContent=`${state.car.carId} · ${state.car.nombre}`;$("visitBadge").textContent=`Visita ${state.visitaId}`;if(code==="0-3"){show("form03");hide("pendingPage");resetForm()}else{hide("form03");show("pendingPage")}}
-function renderChildren(){$("children").innerHTML=state.children.map((c,i)=>`<div class="child"><h3>Niño N°${i+1}</h3><div class="childgrid"><div class="field"><label>Nombre</label><input data-c="${i}" data-f="nombre" value="${esc(c.nombre)}"></div><div class="field"><label>Edad</label><input data-c="${i}" data-f="edad" value="${esc(c.edad)}"></div><div class="field"><label>Sexo</label><input data-c="${i}" data-f="sexo" value="${esc(c.sexo)}"></div></div></div>`).join("");document.querySelectorAll("[data-c]").forEach(x=>x.addEventListener("input",()=>state.children[+x.dataset.c][x.dataset.f]=x.value))}
-function renderChecklist(){let html="<table><thead><tr><th>Indicador</th>"+state.children.map((_,i)=>`<th>N°${i+1}</th>`).join("")+"</tr></thead><tbody>",last="";indicators.forEach(([area,label],idx)=>{if(area!==last){html+=`<tr class="cat"><td colspan="11">${area}</td></tr>`;last=area}html+=`<tr><td>${label}</td>`;for(let child=0;child<10;child++){const k=`${child}_${idx}`,v=state.answers[k]||"";html+=`<td><div class="choice"><button data-k="${k}" data-v="SI" class="${v==="SI"?"active":""}">Sí</button><button data-k="${k}" data-v="NO" class="${v==="NO"?"active":""}">No</button></div></td>`}html+="</tr>"});html+="</tbody></table>";$("checklist").innerHTML=html;document.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{const k=b.dataset.k,v=b.dataset.v;state.answers[k]=state.answers[k]===v?"":v;renderChecklist()})}
-function collect(){state.children.forEach((c,i)=>{c.nombre=$(`name_${i}`)?.value??c.nombre;c.edad=$(`age_${i}`)?.value??c.edad;c.sexo=$(`sex_${i}`)?.value??c.sexo});return{id:state.id,carId:state.car.carId,visitaId:state.visitaId,tipoFicha:state.ficha,archivo:"",form:{hogar:$("hogar").value,ciudad:$("ciudad").value,fecha:$("fecha").value,informante:$("informante").value,cargo:$("cargo").value,reportes:{rep35:$("rep1").value,rep36:$("rep2").value,rep37:$("rep3").value,rep38:$("rep4").value}},children:state.children,answers:state.answers}}
-function fill(r){state.id=r.id||null;state.visitaId=r.visitaId||state.visitaId;const f=r.form||{};$("hogar").value=f.hogar||"";$("ciudad").value=f.ciudad||"";$("fecha").value=f.fecha||today();$("informante").value=f.informante||"";$("cargo").value=f.cargo||"";const reps=f.reportes||{};$("rep1").value=reps.rep35||f.rep1||"";$("rep2").value=reps.rep36||f.rep2||"";$("rep3").value=reps.rep37||"";$("rep4").value=reps.rep38||f.rep4||f.observaciones||"";state.children=r.children||state.children;state.answers=r.answers||{};renderChildren();renderChecklist();$("visitBadge").textContent=`Visita ${state.visitaId}`}
-function fieldText(form,name){try{return form.getTextField(name).getText()||""}catch(e){return""}}
-function radioValue(form,name){try{return String(form.getRadioGroup(name).getSelected()||"").toUpperCase()}catch(e){return""}}
-function normDate(v){const s=String(v||"").trim();let m=s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})$/);if(m)return`${m[3]}-${String(m[2]).padStart(2,"0")}-${String(m[1]).padStart(2,"0")}`;return""}
-const sexNames=["Texto1","Texto10","Texto2","Texto3","Texto4","Texto5","Texto6","Texto7","Texto8","Texto9"];
-async function readDynamicPDF(file){const bytes=await file.arrayBuffer();const pdf=await PDFLib.PDFDocument.load(bytes,{updateMetadata:false});const form=pdf.getForm();const names=new Set(form.getFields().map(f=>f.getName()));if(!names.has("Grupo1")||!names.has("Grupo250"))throw new Error("No es el PDF dinámico 0–3 esperado (faltan Grupo1/Grupo250).");const rec={id:null,carId:state.car.carId,visitaId:state.visitaId,tipoFicha:"0-3",archivo:file.name,form:{hogar:fieldText(form,"Texto31"),ciudad:fieldText(form,"Texto34"),fecha:normDate(fieldText(form,"Campo de fecha1")),informante:fieldText(form,"Texto32"),cargo:fieldText(form,"Texto33"),reportes:{rep35:fieldText(form,"Texto35"),rep36:fieldText(form,"Texto36"),rep37:fieldText(form,"Texto37"),rep38:fieldText(form,"Texto38")}},children:Array.from({length:10},(_,i)=>({nombre:fieldText(form,`Texto${11+i*2}`),edad:fieldText(form,`Texto${12+i*2}`),sexo:fieldText(form,sexNames[i])})),answers:{}};let count=0;for(let child=0;child<10;child++)for(let ind=0;ind<25;ind++){const v=radioValue(form,`Grupo${child*25+ind+1}`);if(v==="SI"||v==="NO"){rec.answers[`${child}_${ind}`]=v;count++}}return{rec,count}}
-$("pdfBtn").onclick=()=>$("pdfInput").click();
-$("pdfInput").onchange=async e=>{const files=[...e.target.files];if(!files.length)return;$("importList").innerHTML="";for(const file of files){try{const x=await readDynamicPDF(file);fill(x.rec);$("importList").insertAdjacentHTML("beforeend",`<div class="import-item"><b>${esc(file.name)}</b> · ${x.count} respuestas · <span style="color:#17663a">listo</span></div>`)}catch(err){$("importList").insertAdjacentHTML("beforeend",`<div class="import-item"><b>${esc(file.name)}</b> · <span style="color:#b91c1c">${esc(err.message)}</span></div>`)}}$("importStatus").textContent=`Procesados: ${files.length} PDF`;e.target.value=""}
-$("saveBtn").onclick=async()=>{try{$("saveBtn").disabled=true;$("saveStatus").textContent="Guardando...";const r=await api("save",{record:collect()});state.id=r.id;$("saveStatus").textContent=r.updated?`Actualizado ✓ ${r.id}`:`Registrado ✓ ${r.id}`}catch(e){$("saveStatus").textContent=e.message}finally{$("saveBtn").disabled=false}}
-async function loadHistory(){try{const r=await api("list",{filters:{carId:state.car.carId}});show("historyPanel");$("historyRecords").innerHTML=r.records.length?r.records.map(x=>`<div class="record"><b>${esc(x.fecha)}</b><span>${esc(x.tipoFicha)}</span><span>${esc(x.visitaId)}</span><span>${esc(x.archivo)}</span><button class="btn" data-rid="${esc(x.id)}">Abrir</button></div>`).join(""):"No hay supervisiones.";document.querySelectorAll("[data-rid]").forEach(b=>b.onclick=async()=>{const x=await api("get",{id:b.dataset.rid});state.ficha=x.record.tipoFicha||"0-3";openFicha(state.ficha);fill(x.record)})}catch(e){alert(e.message)}}
-async function loadRecent(){try{const r=await api("list");$("recentRecords").innerHTML=r.records.length?r.records.slice(0,10).map(x=>`<div class="record"><b>${esc(x.carId||"")}</b><span>${esc(x.hogar||"")}</span><span>${esc(x.fecha||"")}</span><span>${esc(x.tipoFicha||"")}</span><button class="btn" data-open-recent="${esc(x.id)}">Abrir</button></div>`).join(""):"No hay registros.";document.querySelectorAll("[data-open-recent]").forEach(b=>b.onclick=async()=>{const x=await api("get",{id:b.dataset.openRecent});if(x.record.carId){const c=await api("getCAR",{carId:x.record.carId});state.car=c.car;state.ficha=x.record.tipoFicha||"0-3";openFicha(state.ficha);fill(x.record)}})}catch(e){$("recentRecords").textContent=e.message}}
-$("searchBtn").onclick=searchCAR;$("carSearch").onkeydown=e=>{if(e.key==="Enter")searchCAR()};
-$("backHome").onclick=()=>{hide("carPage");show("homePage")};$("backCar").onclick=()=>{hide("fichaPage");show("carPage")};$("homeBtn").onclick=()=>{hide("carPage");hide("fichaPage");hide("adminPage");show("homePage");loadRecent()};
-document.querySelectorAll("[data-ficha]").forEach(b=>b.onclick=()=>openFicha(b.dataset.ficha));
-$("historyBtn").onclick=loadHistory;$("newVisitBtn").onclick=()=>{state.visitaId=newId("VIS");$("visitBadge").textContent=`Visita ${state.visitaId}`;resetForm()};
-$("adminBtn").onclick=()=>{hide("homePage");hide("carPage");hide("fichaPage");show("adminPage")};$("backAdmin").onclick=()=>{$("homeBtn").click()};
-$("masterBtn").onclick=async()=>{try{const r=await api("setupCARMaster",{adminPin:$("adminPin").value});alert(`${r.message}: ${r.rows} CAR`);$("adminLoad").click()}catch(e){alert(e.message)}};
-$("adminLoad").onclick=async()=>{try{const r=await api("adminListCAR",{adminPin:$("adminPin").value,query:$("adminSearch").value,includeArchived:true});$("adminList").innerHTML=r.cars.map(c=>`<div class="admin-row"><b>${esc(c.carId)}</b><span>${esc(c.nombre)}<br><span class="meta">${esc(c.departamento)} · ${esc(c.provincia)} · ${esc(c.distrito)}</span></span><span>${esc(c.estado)}</span><button class="btn" data-arch="${esc(c.carId)}">${c.estado==="ACTIVO"?"Archivar":"Activar"}</button></div>`).join("");document.querySelectorAll("[data-arch]").forEach(b=>b.onclick=async()=>{try{await api("adminArchiveCAR",{adminPin:$("adminPin").value,carId:b.dataset.arch,archive:b.textContent==="Archivar"});$("adminLoad").click()}catch(e){alert(e.message)}})}catch(e){alert(e.message)}};
-$("addCarBtn").onclick=async()=>{try{const car={carId:$("aId").value,ubigeo:$("aUbigeo").value,nombre:$("aNombre").value,tipo:$("aTipo").value,departamento:$("aDep").value,provincia:$("aProv").value,distrito:$("aDist").value};const r=await api("adminAddCAR",{adminPin:$("adminPin").value,car});$("adminStatus").textContent=`CAR ${r.carId} agregado ✓`;$("adminLoad").click()}catch(e){alert(e.message)}};
-$("fecha").value=today();renderChildren();renderChecklist();loadRecent();
+
+
+function hide(id) {
+  $(id)
+    .classList
+    .add("hidden");
+}
+
+
+function esc(value) {
+
+  return String(
+    value == null
+      ? ""
+      : value
+  )
+  .replace(
+    /[&<>"']/g,
+    function(char) {
+
+      return {
+
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+
+      }[char];
+
+    }
+  );
+
+}
+
+
+function today() {
+
+  const d =
+    new Date();
+
+  return (
+
+    d.getFullYear() +
+    "-" +
+    String(
+      d.getMonth() + 1
+    ).padStart(2, "0") +
+    "-" +
+    String(
+      d.getDate()
+    ).padStart(2, "0")
+
+  );
+
+}
+
+
+function makeId(prefix) {
+
+  return (
+
+    prefix +
+    "-" +
+    Math.random()
+      .toString(36)
+      .slice(2, 10)
+      .toUpperCase()
+
+  );
+
+}
+
+
+// ============================================================
+// API
+// ============================================================
+
+async function api(
+  action,
+  payload
+) {
+
+  const response =
+    await fetch(
+      API,
+      {
+
+        method: "POST",
+
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+
+        body:
+          JSON.stringify(
+            Object.assign(
+              {
+                action:
+                  action
+              },
+              payload || {}
+            )
+          )
+
+      }
+    );
+
+
+  const text =
+    await response.text();
+
+
+  let data;
+
+
+  try {
+
+    data =
+      JSON.parse(
+        text
+      );
+
+  } catch (error) {
+
+    throw new Error(
+      "Respuesta no válida del servidor: " +
+      text.slice(
+        0,
+        250
+      )
+    );
+
+  }
+
+
+  if (
+    !response.ok ||
+    !data.ok
+  ) {
+
+    throw new Error(
+      data.error ||
+      "Error del servidor."
+    );
+
+  }
+
+
+  return data;
+
+}
+
+
+// ============================================================
+// INICIO
+// ============================================================
+
+async function loadRecent() {
+
+  try {
+
+    const data =
+      await api(
+        "list",
+        {
+          filters: {}
+        }
+      );
+
+
+    if (
+      !data.records.length
+    ) {
+
+      $("recentList")
+        .textContent =
+        "No hay supervisiones registradas.";
+
+      return;
+
+    }
+
+
+    $("recentList")
+      .innerHTML =
+      data.records
+        .slice(
+          0,
+          10
+        )
+        .map(
+          function(record) {
+
+            return `
+
+              <div class="record">
+
+                <b>
+                  ${esc(record.carId || "Sin CAR")}
+                </b>
+
+                <span>
+                  ${esc(record.hogar || "")}
+                  ·
+                  ${esc(record.tipoFicha || "")}
+                </span>
+
+                <span>
+                  ${esc(record.fecha || "")}
+                </span>
+
+                <button
+                  type="button"
+                  data-recent="${esc(record.id)}">
+
+                  Abrir
+
+                </button>
+
+              </div>
+
+            `;
+
+          }
+        )
+        .join("");
+
+
+    document
+      .querySelectorAll(
+        "[data-recent]"
+      )
+      .forEach(
+        function(button) {
+
+          button.onclick =
+            async function() {
+
+              try {
+
+                const data =
+                  await api(
+                    "get",
+                    {
+                      id:
+                        button.dataset
+                          .recent
+                    }
+                  );
+
+
+                state.car =
+                  (
+                    await api(
+                      "getCAR",
+                      {
+                        carId:
+                          data.record
+                            .carId
+                      }
+                    )
+                  ).car;
+
+
+                openFicha(
+                  data.record
+                    .tipoFicha ||
+                  "0-3"
+                );
+
+
+                fillRecord(
+                  data.record
+                );
+
+              } catch (error) {
+
+                alert(
+                  error.message
+                );
+
+              }
+
+            };
+
+        }
+      );
+
+  } catch (error) {
+
+    $("recentList")
+      .textContent =
+      "No se pudieron cargar las supervisiones.";
+
+  }
+
+}
+
+
+async function searchCAR() {
+
+  const query =
+    $("carSearch")
+      .value
+      .trim();
+
+
+  $("carResults")
+    .innerHTML =
+    "<div class='small'>Buscando...</div>";
+
+
+  try {
+
+    const data =
+      await api(
+        "searchCAR",
+        {
+          query:
+            query
+        }
+      );
+
+
+    renderCARs(
+      data.cars
+    );
+
+  } catch (error) {
+
+    $("carResults")
+      .innerHTML =
+      "<div class='small'>Error: " +
+      esc(error.message) +
+      "</div>";
+
+  }
+
+}
+
+
+function renderCARs(
+  cars
+) {
+
+  if (
+    !cars.length
+  ) {
+
+    $("carResults")
+      .innerHTML =
+      "<div class='small'>No se encontraron CAR activos.</div>";
+
+    return;
+
+  }
+
+
+  $("carResults")
+    .innerHTML =
+    cars
+      .map(
+        function(car) {
+
+          return `
+
+            <div class="car-result">
+
+              <div>
+
+                <b>
+                  ${esc(car.carId)}
+                  —
+                  ${esc(car.nombre)}
+                </b>
+
+                <div class="meta">
+
+                  ${esc(car.tipo)}
+                  ·
+                  ${esc(car.departamento)}
+                  ·
+                  ${esc(car.provincia)}
+                  ·
+                  ${esc(car.distrito)}
+
+                </div>
+
+              </div>
+
+
+              <button
+                class="btn primary"
+                type="button"
+                data-car="${esc(car.carId)}">
+
+                Entrar al CAR
+
+              </button>
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+
+  document
+    .querySelectorAll(
+      "[data-car]"
+    )
+    .forEach(
+      function(button) {
+
+        button.onclick =
+          function() {
+
+            openCAR(
+              button.dataset.car
+            );
+
+          };
+
+      }
+    );
+
+}
+
+
+async function openCAR(
+  carId
+) {
+
+  try {
+
+    const data =
+      await api(
+        "getCAR",
+        {
+          carId:
+            carId
+        }
+      );
+
+
+    state.car =
+      data.car;
+
+
+    hide(
+      "homePage"
+    );
+
+    hide(
+      "fichaPage"
+    );
+
+    hide(
+      "adminPage"
+    );
+
+    show(
+      "carPage"
+    );
+
+
+    $("selectedCarName")
+      .textContent =
+      state.car.nombre;
+
+
+    $("selectedCarMeta")
+      .textContent =
+      "Código " +
+      state.car.carId +
+      " · " +
+      state.car.tipo +
+      " · " +
+      state.car.departamento +
+      " · " +
+      state.car.provincia +
+      " · " +
+      state.car.distrito;
+
+  } catch (error) {
+
+    alert(
+      error.message
+    );
+
+  }
+
+}
+
+
+// ============================================================
+// FICHA
+// ============================================================
+
+function openFicha(
+  ficha
+) {
+
+  state.ficha =
+    ficha;
+
+
+  state.id =
+    null;
+
+
+  state.visitaId =
+    makeId(
+      "VIS"
+    );
+
+
+  hide(
+    "homePage"
+  );
+
+  hide(
+    "carPage"
+  );
+
+  hide(
+    "adminPage"
+  );
+
+  show(
+    "fichaPage"
+  );
+
+
+  $("fichaTitle")
+    .textContent =
+    FICHAS[ficha];
+
+
+  $("carBadge")
+    .textContent =
+    state.car.carId +
+    " · " +
+    state.car.nombre;
+
+
+  $("visitBadge")
+    .textContent =
+    "Visita " +
+    state.visitaId;
+
+
+  hide(
+    "history"
+  );
+
+
+  if (
+    ficha === "0-3"
+  ) {
+
+    show(
+      "ficha03"
+    );
+
+    hide(
+      "pendingFichas"
+    );
+
+    resetForm();
+
+  } else {
+
+    hide(
+      "ficha03"
+    );
+
+    show(
+      "pendingFichas"
+    );
+
+  }
+
+}
+
+
+function resetForm() {
+
+  state.id =
+    null;
+
+
+  state.children =
+    Array.from(
+      {
+        length: 10
+      },
+      function() {
+
+        return {
+          nombre: "",
+          edad: "",
+          sexo: ""
+        };
+
+      }
+    );
+
+
+  state.answers =
+    {};
+
+
+  [
+    "hogar",
+    "ciudad",
+    "informante",
+    "cargo",
+    "rep1",
+    "rep2",
+    "rep3",
+    "rep4"
+  ]
+  .forEach(
+    function(id) {
+
+      $(id).value =
+        "";
+
+    }
+  );
+
+
+  $("fecha")
+    .value =
+    today();
+
+
+  $("importList")
+    .innerHTML =
+    "";
+
+
+  $("importStatus")
+    .textContent =
+    "";
+
+
+  $("saveStatus")
+    .textContent =
+    "";
+
+
+  renderChildren();
+  renderChecklist();
+
+}
+
+
+function renderChildren() {
+
+  $("children")
+    .innerHTML =
+    state.children
+      .map(
+        function(child,index) {
+
+          return `
+
+            <div class="child">
+
+              <h3>
+                Niño N°${index + 1}
+              </h3>
+
+              <div class="childgrid">
+
+                <div class="field">
+
+                  <label>Nombre</label>
+
+                  <input
+                    id="name_${index}"
+                    value="${esc(child.nombre)}">
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>Edad</label>
+
+                  <input
+                    id="age_${index}"
+                    value="${esc(child.edad)}">
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>Sexo</label>
+
+                  <input
+                    id="sex_${index}"
+                    value="${esc(child.sexo)}">
+
+                </div>
+
+              </div>
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+
+  state.children
+    .forEach(
+      function(child,index) {
+
+        $(
+          "name_" +
+          index
+        ).oninput =
+          function() {
+
+            child.nombre =
+              $(
+                "name_" +
+                index
+              ).value;
+
+          };
+
+
+        $(
+          "age_" +
+          index
+        ).oninput =
+          function() {
+
+            child.edad =
+              $(
+                "age_" +
+                index
+              ).value;
+
+          };
+
+
+        $(
+          "sex_" +
+          index
+        ).oninput =
+          function() {
+
+            child.sexo =
+              $(
+                "sex_" +
+                index
+              ).value;
+
+          };
+
+      }
+    );
+
+}
+
+
+function renderChecklist() {
+
+  let html =
+    "";
+
+
+  let lastArea =
+    "";
+
+
+  INDICATORS.forEach(
+    function(section) {
+
+      const area =
+        section[0];
+
+
+      const questions =
+        section[1];
+
+
+      if (
+        area !==
+        lastArea
+      ) {
+
+        html += `
+
+          <tr class="cat">
+
+            <td colspan="21">
+              ${esc(area)}
+            </td>
+
+          </tr>
+
+        `;
+
+
+        lastArea =
+          area;
+
+      }
+
+
+      questions.forEach(
+        function(question) {
+
+          const indicatorIndex =
+            FLAT_INDICATORS
+              .indexOf(
+                question
+              );
+
+
+          html += `
+
+            <tr>
+
+              <td>
+                ${esc(question)}
+              </td>
+
+          `;
+
+
+          for (
+            let child = 0;
+            child < 10;
+            child++
+          ) {
+
+            const key =
+              child +
+              "_" +
+              indicatorIndex;
+
+
+            const value =
+              state.answers[key]
+              || "";
+
+
+            html += `
+
+              <td>
+
+                <div class="ans">
+
+                  <button
+                    type="button"
+                    data-key="${key}"
+                    data-value="SI"
+                    class="${
+                      value === "SI"
+                        ? "active"
+                        : ""
+                    }">
+
+                    ✓
+
+                  </button>
+
+
+                  <button
+                    type="button"
+                    data-key="${key}"
+                    data-value="NO"
+                    class="no ${
+                      value === "NO"
+                        ? "active"
+                        : ""
+                    }">
+
+                    ✓
+
+                  </button>
+
+                </div>
+
+              </td>
+
+            `;
+
+          }
+
+
+          html +=
+            "</tr>";
+
+        }
+      );
+
+    }
+  );
+
+
+  $("checkBody")
+    .innerHTML =
+    html;
+
+
+  $("checkBody")
+    .querySelectorAll(
+      "[data-key]"
+    )
+    .forEach(
+      function(button) {
+
+        button.onclick =
+          function() {
+
+            const key =
+              button.dataset
+                .key;
+
+
+            const value =
+              button.dataset
+                .value;
+
+
+            state.answers[key] =
+              state.answers[key] ===
+              value
+                ? ""
+                : value;
+
+
+            renderChecklist();
+
+          };
+
+      }
+    );
+
+}
+
+
+function collectRecord() {
+
+  state.children
+    .forEach(
+      function(child,index) {
+
+        child.nombre =
+          $(
+            "name_" +
+            index
+          ).value;
+
+
+        child.edad =
+          $(
+            "age_" +
+            index
+          ).value;
+
+
+        child.sexo =
+          $(
+            "sex_" +
+            index
+          ).value;
+
+      }
+    );
+
+
+  return {
+
+    id:
+      state.id,
+
+    carId:
+      state.car.carId,
+
+    visitaId:
+      state.visitaId,
+
+    tipoFicha:
+      state.ficha,
+
+    archivo:
+      "",
+
+    form: {
+
+      hogar:
+        $("hogar").value,
+
+      ciudad:
+        $("ciudad").value,
+
+      fecha:
+        $("fecha").value,
+
+      informante:
+        $("informante").value,
+
+      cargo:
+        $("cargo").value,
+
+      reportes: {
+
+        rep35:
+          $("rep1").value,
+
+        rep36:
+          $("rep2").value,
+
+        rep37:
+          $("rep3").value,
+
+        rep38:
+          $("rep4").value
+
+      }
+
+    },
+
+    children:
+      state.children.map(
+        function(child) {
+
+          return Object.assign(
+            {},
+            child
+          );
+
+        }
+      ),
+
+    answers:
+      Object.assign(
+        {},
+        state.answers
+      )
+
+  };
+
+}
+
+
+function fillRecord(
+  record
+) {
+
+  state.id =
+    record.id ||
+    null;
+
+
+  state.visitaId =
+    record.visitaId ||
+    state.visitaId;
+
+
+  const form =
+    record.form ||
+    {};
+
+
+  $("hogar")
+    .value =
+    form.hogar ||
+    "";
+
+
+  $("ciudad")
+    .value =
+    form.ciudad ||
+    "";
+
+
+  $("fecha")
+    .value =
+    form.fecha ||
+    today();
+
+
+  $("informante")
+    .value =
+    form.informante ||
+    "";
+
+
+  $("cargo")
+    .value =
+    form.cargo ||
+    "";
+
+
+  const reportes =
+    form.reportes ||
+    {};
+
+
+  $("rep1")
+    .value =
+    reportes.rep35 ||
+    form.rep1 ||
+    "";
+
+
+  $("rep2")
+    .value =
+    reportes.rep36 ||
+    form.rep2 ||
+    "";
+
+
+  $("rep3")
+    .value =
+    reportes.rep37 ||
+    form.rep3 ||
+    "";
+
+
+  $("rep4")
+    .value =
+    reportes.rep38 ||
+    form.rep4 ||
+    "";
+
+
+  state.children =
+    Array.isArray(
+      record.children
+    )
+      ? record.children
+      : state.children;
+
+
+  state.answers =
+    record.answers ||
+    {};
+
+
+  renderChildren();
+  renderChecklist();
+
+
+  $("visitBadge")
+    .textContent =
+    "Visita " +
+    state.visitaId;
+
+}
+
+
+async function saveCurrent() {
+
+  try {
+
+    $("saveBtn")
+      .disabled =
+      true;
+
+
+    $("saveStatus")
+      .textContent =
+      "Guardando...";
+
+
+    const data =
+      await api(
+        "save",
+        {
+          record:
+            collectRecord()
+        }
+      );
+
+
+    state.id =
+      data.id;
+
+
+    $("saveStatus")
+      .textContent =
+      data.updated
+        ? "Actualizado ✓ " +
+          data.id
+        : "Registrado ✓ " +
+          data.id;
+
+
+    loadRecent();
+
+
+  } catch (error) {
+
+    alert(
+      error.message
+    );
+
+
+    $("saveStatus")
+      .textContent =
+      "Error al guardar";
+
+  } finally {
+
+    $("saveBtn")
+      .disabled =
+      false;
+
+  }
+
+}
+
+
+// ============================================================
+// PDF DINÁMICO
+// ============================================================
+//
+// Este importador usa los nombres internos del PDF 0-3:
+//
+// Texto31  -> Hogar
+// Texto34  -> Ciudad
+// Campo de fecha1 -> Fecha
+// Texto32  -> Informante
+// Texto33  -> Cargo
+//
+// Texto1, Texto10, Texto2...Texto9 -> Sexo 1..10
+// Texto11...Texto30 -> Nombre/Edad 1..10
+// Texto35...Texto38 -> Reportes
+//
+// Grupo1...Grupo250 -> 25 indicadores x 10 NNA
+// ============================================================
+
+function pdfTextField(
+  form,
+  name
+) {
+
+  try {
+
+    return (
+      form
+        .getTextField(name)
+        .getText() ||
+      ""
+    );
+
+  } catch (error) {
+
+    return "";
+
+  }
+
+}
+
+
+function pdfRadioField(
+  form,
+  name
+) {
+
+  try {
+
+    return String(
+      form
+        .getRadioGroup(
+          name
+        )
+        .getSelected() ||
+      ""
+    )
+      .toUpperCase();
+
+  } catch (error) {
+
+    return "";
+
+  }
+
+}
+
+
+function normalizeDate(
+  value
+) {
+
+  const text =
+    String(
+      value ||
+      ""
+    )
+      .trim();
+
+
+  let match =
+    text.match(
+      /^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})$/
+    );
+
+
+  if (match) {
+
+    return (
+
+      match[3] +
+      "-" +
+      String(
+        match[2]
+      ).padStart(
+        2,
+        "0"
+      ) +
+      "-" +
+      String(
+        match[1]
+      ).padStart(
+        2,
+        "0"
+      )
+
+    );
+
+  }
+
+
+  match =
+    text.match(
+      /^(\d{4})[\/\-.](\d{1,2})[\/\-.](\d{1,2})$/
+    );
+
+
+  if (match) {
+
+    return (
+
+      match[1] +
+      "-" +
+      String(
+        match[2]
+      ).padStart(
+        2,
+        "0"
+      ) +
+      "-" +
+      String(
+        match[3]
+      ).padStart(
+        2,
+        "0"
+      )
+
+    );
+
+  }
+
+
+  return "";
+
+}
+
+
+const SEX_FIELD_NAMES = [
+
+  "Texto1",
+  "Texto10",
+  "Texto2",
+  "Texto3",
+  "Texto4",
+  "Texto5",
+  "Texto6",
+  "Texto7",
+  "Texto8",
+  "Texto9"
+
+];
+
+
+async function importPDF(
+  file
+) {
+
+  try {
+
+    $("importStatus")
+      .textContent =
+      "Leyendo PDF...";
+
+
+    const bytes =
+      await file.arrayBuffer();
+
+
+    if (
+      !window.PDFLib
+    ) {
+
+      throw new Error(
+        "No se pudo cargar PDF-LIB."
+      );
+
+    }
+
+
+    const pdf =
+      await PDFLib
+        .PDFDocument
+        .load(
+          bytes,
+          {
+            updateMetadata:
+              false
+          }
+        );
+
+
+    const form =
+      pdf.getForm();
+
+
+    const fields =
+      form
+        .getFields();
+
+
+    const names =
+      new Set(
+        fields.map(
+          function(field) {
+
+            return field.getName();
+
+          }
+        )
+      );
+
+
+    if (
+      !names.has(
+        "Grupo1"
+      ) ||
+      !names.has(
+        "Grupo250"
+      )
+    ) {
+
+      throw new Error(
+        "El archivo no conserva los campos Grupo1–Grupo250. Selecciona el PDF dinámico original."
+      );
+
+    }
+
+
+    state.id =
+      null;
+
+
+    $("hogar")
+      .value =
+      pdfTextField(
+        form,
+        "Texto31"
+      );
+
+
+    $("ciudad")
+      .value =
+      pdfTextField(
+        form,
+        "Texto34"
+      );
+
+
+    $("fecha")
+      .value =
+      normalizeDate(
+        pdfTextField(
+          form,
+          "Campo de fecha1"
+        )
+      );
+
+
+    $("informante")
+      .value =
+      pdfTextField(
+        form,
+        "Texto32"
+      );
+
+
+    $("cargo")
+      .value =
+      pdfTextField(
+        form,
+        "Texto33"
+      );
+
+
+    state.children =
+      Array.from(
+        {
+          length: 10
+        },
+        function(_,index) {
+
+          return {
+
+            nombre:
+              pdfTextField(
+                form,
+                "Texto" +
+                (
+                  11 +
+                  index * 2
+                )
+              ),
+
+            edad:
+              pdfTextField(
+                form,
+                "Texto" +
+                (
+                  12 +
+                  index * 2
+                )
+              ),
+
+            sexo:
+              pdfTextField(
+                form,
+                SEX_FIELD_NAMES[
+                  index
+                ]
+              )
+
+          };
+
+        }
+      );
+
+
+    $("rep1")
+      .value =
+      pdfTextField(
+        form,
+        "Texto35"
+      );
+
+
+    $("rep2")
+      .value =
+      pdfTextField(
+        form,
+        "Texto36"
+      );
+
+
+    $("rep3")
+      .value =
+      pdfTextField(
+        form,
+        "Texto37"
+      );
+
+
+    $("rep4")
+      .value =
+      pdfTextField(
+        form,
+        "Texto38"
+      );
+
+
+    state.answers =
+      {};
+
+
+    let count =
+      0;
+
+
+    for (
+      let child = 0;
+      child < 10;
+      child++
+    ) {
+
+      for (
+        let indicator = 0;
+        indicator < 25;
+        indicator++
+      ) {
+
+        const group =
+          "Grupo" +
+          (
+            child * 25 +
+            indicator +
+            1
+          );
+
+
+        const value =
+          pdfRadioField(
+            form,
+            group
+          );
+
+
+        if (
+          value === "SI" ||
+          value === "NO"
+        ) {
+
+          state.answers[
+            child +
+            "_" +
+            indicator
+          ] =
+            value;
+
+
+          count++;
+
+        }
+
+      }
+
+    }
+
+
+    renderChildren();
+    renderChecklist();
+
+
+    $("importStatus")
+      .textContent =
+      "PDF cargado ✓ · " +
+      fields.length +
+      " campos · " +
+      count +
+      " respuestas";
+
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+
+    $("importStatus")
+      .textContent =
+      "Error al cargar PDF";
+
+
+    alert(
+      error.message ||
+      "No se pudo leer el PDF."
+    );
+
+  }
+
+}
+
+
+// ============================================================
+// HISTORIAL
+// ============================================================
+
+async function loadHistory() {
+
+  try {
+
+    const data =
+      await api(
+        "list",
+        {
+          filters: {
+
+            carId:
+              state.car.carId
+
+          }
+
+        }
+      );
+
+
+    show(
+      "history"
+    );
+
+
+    if (
+      !data.records.length
+    ) {
+
+      $("historyList")
+        .textContent =
+        "No hay supervisiones para este CAR.";
+
+
+      return;
+
+    }
+
+
+    $("historyList")
+      .innerHTML =
+      data.records
+        .map(
+          function(record) {
+
+            return `
+
+              <div class="record">
+
+                <b>
+                  ${esc(record.fecha)}
+                </b>
+
+                <span>
+                  ${esc(record.tipoFicha)}
+                  ·
+                  ${esc(record.visitaId)}
+                </span>
+
+                <span>
+                  ${esc(record.archivo || "")}
+                </span>
+
+                <button
+                  type="button"
+                  data-history="${esc(record.id)}">
+
+                  Abrir
+
+                </button>
+
+              </div>
+
+            `;
+
+          }
+        )
+        .join("");
+
+
+    document
+      .querySelectorAll(
+        "[data-history]"
+      )
+      .forEach(
+        function(button) {
+
+          button.onclick =
+            async function() {
+
+              try {
+
+                const data =
+                  await api(
+                    "get",
+                    {
+                      id:
+                        button.dataset
+                          .history
+                    }
+                  );
+
+
+                state.ficha =
+                  data.record
+                    .tipoFicha ||
+                  "0-3";
+
+
+                openFicha(
+                  state.ficha
+                );
+
+
+                fillRecord(
+                  data.record
+                );
+
+              } catch (error) {
+
+                alert(
+                  error.message
+                );
+
+              }
+
+            };
+
+        }
+      );
+
+  } catch (error) {
+
+    alert(
+      error.message
+    );
+
+  }
+
+}
+
+
+// ============================================================
+// EVENTOS
+// ============================================================
+
+$("searchBtn")
+  .onclick =
+  searchCAR;
+
+
+$("carSearch")
+  .onkeydown =
+  function(event) {
+
+    if (
+      event.key ===
+      "Enter"
+    ) {
+
+      searchCAR();
+
+    }
+
+  };
+
+
+$("backHome")
+  .onclick =
+  function() {
+
+    hide(
+      "carPage"
+    );
+
+    show(
+      "homePage"
+    );
+
+  };
+
+
+$("homeBtn")
+  .onclick =
+  function() {
+
+    hide(
+      "carPage"
+    );
+
+    hide(
+      "fichaPage"
+    );
+
+    hide(
+      "adminPage"
+    );
+
+    show(
+      "homePage"
+    );
+
+  };
+
+
+$("backCar")
+  .onclick =
+  function() {
+
+    hide(
+      "fichaPage"
+    );
+
+    show(
+      "carPage"
+    );
+
+  };
+
+
+$("historyBtn")
+  .onclick =
+  loadHistory;
+
+
+document
+  .querySelectorAll(
+    "[data-ficha]"
+  )
+  .forEach(
+    function(button) {
+
+      button.onclick =
+        function() {
+
+          openFicha(
+            button.dataset
+              .ficha
+          );
+
+        };
+
+    }
+  );
+
+
+$("pdfBtn")
+  .onclick =
+  function() {
+
+    $("pdfInput")
+      .click();
+
+  };
+
+
+$("pdfInput")
+  .onchange =
+  function(event) {
+
+    const files =
+      Array.from(
+        event.target.files ||
+        []
+      );
+
+
+    if (
+      !files.length
+    ) {
+
+      return;
+
+    }
+
+
+    $("importList")
+      .innerHTML =
+      "";
+
+
+    files.forEach(
+      async function(file) {
+
+        const item =
+          document.createElement(
+            "div"
+          );
+
+
+        item.className =
+          "import-item";
+
+
+        item.textContent =
+          file.name +
+          " · procesando...";
+
+
+        $("importList")
+          .appendChild(
+            item
+          );
+
+
+        try {
+
+          await importPDF(
+            file
+          );
+
+
+          item.textContent =
+            file.name +
+            " · cargado ✓";
+
+
+        } catch (error) {
+
+          item.textContent =
+            file.name +
+            " · error";
+
+
+        }
+
+      }
+    );
+
+
+    event.target.value =
+      "";
+
+  };
+
+
+$("newVisitBtn")
+  .onclick =
+  function() {
+
+    state.visitaId =
+      makeId(
+        "VIS"
+      );
+
+
+    $("visitBadge")
+      .textContent =
+      "Visita " +
+      state.visitaId;
+
+
+    resetForm();
+
+  };
+
+
+$("saveBtn")
+  .onclick =
+  saveCurrent;
+
+
+$("adminBtn")
+  .onclick =
+  function() {
+
+    hide(
+      "homePage"
+    );
+
+    hide(
+      "carPage"
+    );
+
+    hide(
+      "fichaPage"
+    );
+
+    show(
+      "adminPage"
+    );
+
+  };
+
+
+$("backAdmin")
+  .onclick =
+  function() {
+
+    hide(
+      "adminPage"
+    );
+
+    show(
+      "homePage"
+    );
+
+  };
+
+
+$("adminLoad")
+  .onclick =
+  async function() {
+
+    try {
+
+      const data =
+        await api(
+          "adminListCAR",
+          {
+
+            adminPin:
+              $("adminPin")
+                .value,
+
+            query:
+              $("adminSearch")
+                .value
+
+          }
+        );
+
+
+      if (
+        !data.cars.length
+      ) {
+
+        $("adminList")
+          .innerHTML =
+          "<div class='small'>No hay resultados.</div>";
+
+
+        return;
+
+      }
+
+
+      $("adminList")
+        .innerHTML =
+        data.cars
+          .map(
+            function(car) {
+
+              return `
+
+                <div class="adminrow">
+
+                  <b>
+                    ${esc(car.carId)}
+                  </b>
+
+                  <span>
+                    ${esc(car.nombre)}
+                  </span>
+
+                  <span>
+                    ${esc(car.estado)}
+                  </span>
+
+                  <button
+                    class="btn"
+                    type="button"
+                    data-archive="${esc(car.carId)}">
+
+                    ${
+                      car.estado ===
+                      "ARCHIVADO"
+                        ? "Activar"
+                        : "Archivar"
+                    }
+
+                  </button>
+
+                </div>
+
+              `;
+
+            }
+          )
+          .join("");
+
+
+      $("adminList")
+        .querySelectorAll(
+          "[data-archive]"
+        )
+        .forEach(
+          function(button) {
+
+            button.onclick =
+              async function() {
+
+                try {
+
+                  const archive =
+                    button.textContent
+                      .trim()
+                      .toLowerCase() ===
+                    "archivar";
+
+
+                  await api(
+                    "adminArchiveCAR",
+                    {
+
+                      adminPin:
+                        $("adminPin")
+                          .value,
+
+                      carId:
+                        button.dataset
+                          .archive,
+
+                      archive:
+                        archive
+
+                    }
+                  );
+
+
+                  $("adminLoad")
+                    .click();
+
+                } catch (error) {
+
+                  alert(
+                    error.message
+                  );
+
+                }
+
+              };
+
+          }
+        );
+
+    } catch (error) {
+
+      alert(
+        error.message
+      );
+
+    }
+
+  };
+
+
+$("addCar")
+  .onclick =
+  async function() {
+
+    try {
+
+      const car = {
+
+        carId:
+          $("aId").value,
+
+        nombre:
+          $("aNombre").value,
+
+        tipo:
+          $("aTipo").value,
+
+        departamento:
+          $("aDep").value,
+
+        provincia:
+          $("aProv").value,
+
+        distrito:
+          $("aDist").value
+
+      };
+
+
+      const data =
+        await api(
+          "adminAddCAR",
+          {
+
+            adminPin:
+              $("adminPin").value,
+
+            car:
+              car
+
+          }
+        );
+
+
+      $("adminStatus")
+        .textContent =
+        "CAR " +
+        data.carId +
+        " agregado ✓";
+
+
+      $("adminLoad")
+        .click();
+
+
+    } catch (error) {
+
+      alert(
+        error.message
+      );
+
+    }
+
+  };
+
+
+renderChildren();
+renderChecklist();
+loadRecent();
+
 </script>
 </body>
 </html>
