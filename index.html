@@ -2,32 +2,34 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sistema de Supervisión CAR</title>
 <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 <style>
-:root{--blue:#1d4ed8;--text:#172033;--muted:#64748b;--border:#d7dce5;--soft:#f8fafc;--danger:#b91c1c}
-*{box-sizing:border-box}body{margin:0;background:#f5f7fb;color:var(--text);font-family:Arial,Helvetica,sans-serif}
-header{background:#fff;border-bottom:1px solid var(--border);padding:16px 24px}
-header h1{margin:0;font-size:22px}header p{margin:4px 0 0;color:var(--muted);font-size:12px}
-main{max-width:1200px;margin:18px auto;padding:0 14px}.hidden{display:none!important}
-.topbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.btn{border:1px solid #aab2c0;background:#fff;border-radius:7px;padding:9px 12px;cursor:pointer;font-weight:600}.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}.btn.danger{color:var(--danger)}
-.status{margin-left:auto;color:var(--muted);font-size:12px}
-.card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px}.card h2{margin:0 0 10px;font-size:18px}.small{font-size:12px;color:var(--muted)}
-.searchrow{display:grid;grid-template-columns:1fr auto;gap:8px}.searchrow input,.field input,.field textarea,.field select{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:7px;font:inherit}
-.results{margin-top:10px;display:grid;gap:8px}.car-result{border:1px solid var(--border);border-radius:9px;padding:12px;display:flex;justify-content:space-between;gap:12px;align-items:center;background:#fff}.car-result .meta{color:var(--muted);font-size:12px}
-.crumb{font-size:12px;color:var(--muted);cursor:pointer}.car-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}.badges{display:flex;gap:7px;flex-wrap:wrap}.badge{padding:5px 8px;background:#eef2ff;border-radius:999px;font-size:11px}
-.fichas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.ficha{border:1px solid var(--border);border-radius:12px;padding:15px;background:#fff;min-height:155px;display:flex;flex-direction:column}.ficha h3{margin:0 0 7px;font-size:16px}.ficha .num{font-size:11px;color:var(--muted);margin-bottom:10px}.ficha button{margin-top:auto}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.field label{display:block;font-size:12px;font-weight:700;margin-bottom:5px}
-.children{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.child{border:1px solid var(--border);border-radius:8px;padding:10px;background:var(--soft)}.child h3{margin:0 0 8px;font-size:13px}.childgrid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px}
-.tablewrap{overflow:auto;border:1px solid var(--border);border-radius:8px}table{border-collapse:collapse;width:100%;min-width:1120px}th,td{border-bottom:1px solid #cfd5dd;border-right:1px solid #cfd5dd;padding:5px;font-size:11px;text-align:center}th{background:#e8ebef}th:first-child,td:first-child{text-align:left;min-width:315px;position:sticky;left:0;background:#fff;z-index:1}tr.cat td{background:#eef2f6;font-weight:700;text-transform:uppercase;text-align:center}
-.ans{display:flex;justify-content:center}.ans button{width:28px;height:26px;border:0;background:#f1f5f9;cursor:pointer;font-size:10px}.ans button+button{border-left:1px solid #c7cdd7}.ans button.active{background:#dbeafe;color:#1d4ed8;font-weight:700}.ans button.no.active{background:#fee2e2;color:#991b1b}
-.record{display:grid;grid-template-columns:150px 1fr 110px 70px;gap:8px;align-items:center;border-top:1px solid #ddd;padding:8px 0;font-size:12px}
-.record:first-child{border-top:0}.record button{border:1px solid #888;background:#fff;padding:5px 8px;border-radius:4px;cursor:pointer}
-.adminrow{display:grid;grid-template-columns:130px 1fr 100px 90px;gap:8px;align-items:center;border-top:1px solid #ddd;padding:8px;font-size:12px}
-.adminrow:first-child{border-top:0}.import-list{display:grid;gap:7px;margin-top:8px}.import-item{border:1px solid var(--border);border-radius:7px;padding:8px;font-size:12px}
-@media(max-width:850px){.fichas{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.children{grid-template-columns:1fr}.searchrow{grid-template-columns:1fr}.car-result{flex-direction:column;align-items:flex-start}.record,.adminrow{grid-template-columns:1fr}.status{width:100%;margin-left:0}}
-@media print{header,.topbar,.notice,#homePage,#carPage,.adminPage,.btn{display:none!important}.card{border:0;max-width:none}}
+:root{--blue:#1d4ed8;--bg:#f5f7fb;--card:#fff;--border:#d9dee8;--text:#172033;--muted:#64748b;--green:#166534;--red:#b91c1c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,sans-serif;color:var(--text)}
+header{background:#fff;border-bottom:1px solid var(--border);padding:16px 24px;position:sticky;top:0;z-index:5}
+header h1{margin:0;font-size:21px}header p{margin:4px 0 0;color:var(--muted);font-size:13px}
+main{max-width:1200px;margin:22px auto;padding:0 16px}.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.field label{display:block;font-size:12px;font-weight:bold;margin-bottom:5px}
+input,textarea,select{width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;font-size:14px;background:#fff}textarea{min-height:90px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.btn{border:1px solid var(--border);background:#fff;padding:10px 14px;border-radius:8px;font-weight:bold;cursor:pointer}.btn.primary{background:var(--blue);color:white;border-color:var(--blue)}.btn.danger{color:var(--red)}
+.status{margin-left:auto;font-size:13px;color:var(--muted)}.notice{background:#eff6ff;border:1px solid #bfdbfe;border-radius:9px;padding:10px;font-size:13px;margin-top:12px}
+.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:10px}table{border-collapse:collapse;width:100%;min-width:1100px}th,td{border-bottom:1px solid var(--border);padding:8px;text-align:center;font-size:12px}th{background:#eef2f7;position:sticky;top:0;z-index:2}th:first-child,td:first-child{text-align:left;min-width:310px;position:sticky;left:0;background:#fff;z-index:1}.cat td{background:#e9eef5!important;font-weight:bold;text-transform:uppercase;color:#475569}
+.choice{display:flex;justify-content:center;gap:4px}.choice button{font-size:11px;padding:6px 7px;border:1px solid var(--border);background:#fff;border-radius:6px;cursor:pointer}.choice button.active{border-color:var(--blue);background:#eff6ff;color:var(--blue);font-weight:bold}.choice button.no.active{border-color:#fecaca;background:#fff1f2;color:var(--red)}
+.children{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.child{border:1px solid var(--border);border-radius:9px;padding:12px;background:#fafbfc}.child h3{font-size:14px;margin:0 0 9px}.childgrid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px}
+.hidden{display:none!important}.help{font-size:12px;color:var(--muted)}
+.results{display:grid;gap:8px;margin-top:12px}.car-result{border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;justify-content:space-between;align-items:center;gap:12px}.meta{color:var(--muted);font-size:12px;margin-top:4px}
+.fichas{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.ficha{border:1px solid var(--border);border-radius:12px;padding:15px;min-height:155px;display:flex;flex-direction:column;background:#fff}.ficha h3{margin:0 0 7px;font-size:16px}.ficha .num{font-size:11px;color:var(--muted);margin-bottom:10px}.ficha button{margin-top:auto}
+.badge{display:inline-block;padding:5px 8px;background:#eef2ff;border-radius:999px;font-size:11px;margin-right:5px}
+.import-list{display:grid;gap:7px;margin-top:10px}.import-item{border:1px solid var(--border);border-radius:7px;padding:8px;font-size:12px}
+.record{display:grid;grid-template-columns:145px 1fr 105px 75px;gap:8px;align-items:center;border-top:1px solid #ddd;padding:9px 0;font-size:12px}.record:first-child{border-top:0}
+.admin-row{display:grid;grid-template-columns:130px 1fr 90px 90px;gap:8px;align-items:center;border-top:1px solid #ddd;padding:8px;font-size:12px}.admin-row:first-child{border-top:0}
+.page-group{margin-top:16px;padding-top:10px;border-top:1px solid var(--border)}.page-group:first-child{border-top:0}
+.api-check{font-size:12px;padding:8px 10px;border-radius:8px;background:#f8fafc;border:1px solid var(--border);margin-top:8px}
+.api-check.ok{color:var(--green)}.api-check.bad{color:var(--red)}
+@media(max-width:800px){.grid,.children,.fichas{grid-template-columns:1fr}.childgrid{grid-template-columns:1fr}.record,.admin-row{grid-template-columns:1fr}.status{width:100%;margin-left:0}.car-result{align-items:flex-start;flex-direction:column}}
+@media print{header,.toolbar,.notice,#homePage,#carPage,.adminPage,.btn{display:none!important}.card{border:0;max-width:none}}
 </style>
 </head>
 <body>
@@ -37,86 +39,214 @@ main{max-width:1200px;margin:18px auto;padding:0 14px}.hidden{display:none!impor
   <p>CAR → instrumento → supervisión → PDF → Google Sheets</p>
 </header>
 
-<div class="topbar" style="max-width:1200px;margin:12px auto 0;padding:0 14px">
+<div class="toolbar" style="max-width:1200px;margin:12px auto 0;padding:0 14px">
   <button class="btn" id="homeBtn">Inicio</button>
   <button class="btn" id="adminBtn">Administración</button>
-  <span class="status" id="globalStatus">Listo</span>
+  <span class="status" id="globalStatus">Comprobando conexión...</span>
 </div>
 
 <main id="homePage">
+
   <div class="card">
+
     <h2>Buscar CAR</h2>
+
     <div class="searchrow">
       <input id="carSearch" placeholder="Código CAR o nombre del hogar...">
       <button class="btn primary" id="searchBtn">Buscar</button>
     </div>
-    <div class="small">Puedes escribir parte del código, nombre, departamento, provincia o distrito.</div>
+
+    <div class="small">
+      Puedes escribir código, nombre, departamento, provincia o distrito.
+    </div>
+
+    <div id="apiCheck" class="api-check">
+      Comprobando conexión con Google Sheets...
+    </div>
+
     <div id="carResults" class="results"></div>
+
   </div>
 
+
   <div class="card">
+
     <h2>Supervisiones recientes</h2>
-    <div id="recentList" class="small">Cargando...</div>
+
+    <div id="recentList" class="help">
+      Cargando...
+    </div>
+
   </div>
+
 </main>
+
 
 <main id="carPage" class="hidden">
-  <div class="card">
-    <div class="crumb" id="backHome">← Volver a búsqueda</div>
-    <div class="car-head" style="margin-top:9px">
-      <div>
-        <h2 id="selectedCarName" style="margin:0"></h2>
-        <div id="selectedCarMeta" class="small"></div>
-      </div>
-      <button class="btn" id="historyBtn">Ver historial</button>
-    </div>
-  </div>
 
   <div class="card">
-    <h2>Seleccionar instrumento</h2>
-    <div class="fichas">
-      <div class="ficha"><div class="num">01</div><h3>Lista de cotejo de discapacidad</h3><div class="small">Instrumento de discapacidad.</div><button class="btn" data-ficha="DISCAPACIDAD">Abrir</button></div>
-      <div class="ficha"><div class="num">02</div><h3>NNA 0–3 años</h3><div class="small">Importación PDF dinámica habilitada.</div><button class="btn primary" data-ficha="0-3">Abrir</button></div>
-      <div class="ficha"><div class="num">03</div><h3>NNA 4–5 años</h3><div class="small">Pendiente de mapear su PDF.</div><button class="btn" data-ficha="4-5">Abrir</button></div>
-      <div class="ficha"><div class="num">04</div><h3>NNA 6–11 años</h3><div class="small">Pendiente de mapear su PDF.</div><button class="btn" data-ficha="6-11">Abrir</button></div>
-      <div class="ficha"><div class="num">05</div><h3>NNA 12–17 años</h3><div class="small">Pendiente de mapear su PDF.</div><button class="btn" data-ficha="12-17">Abrir</button></div>
+
+    <div class="crumb" id="backHome" style="cursor:pointer;color:var(--muted)">
+      ← Volver a búsqueda
     </div>
+
+    <div style="margin-top:10px;display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap">
+
+      <div>
+
+        <h2 id="selectedCarName" style="margin:0"></h2>
+
+        <div id="selectedCarMeta" class="small"></div>
+
+      </div>
+
+      <button class="btn" id="historyBtn">
+        Ver historial
+      </button>
+
+    </div>
+
   </div>
+
+
+  <div class="card">
+
+    <h2>Seleccionar instrumento</h2>
+
+    <div class="fichas">
+
+      <div class="ficha">
+        <div class="num">01</div>
+        <h3>Lista de cotejo de discapacidad</h3>
+        <div class="small">
+          Instrumento de discapacidad.
+        </div>
+        <button class="btn" data-ficha="DISCAPACIDAD">
+          Abrir
+        </button>
+      </div>
+
+      <div class="ficha">
+        <div class="num">02</div>
+        <h3>NNA 0–3 años</h3>
+        <div class="small">
+          PDF dinámico conectado.
+        </div>
+        <button class="btn primary" data-ficha="0-3">
+          Abrir
+        </button>
+      </div>
+
+      <div class="ficha">
+        <div class="num">03</div>
+        <h3>NNA 4–5 años</h3>
+        <div class="small">
+          Preparado para conectar su PDF.
+        </div>
+        <button class="btn" data-ficha="4-5">
+          Abrir
+        </button>
+      </div>
+
+      <div class="ficha">
+        <div class="num">04</div>
+        <h3>NNA 6–11 años</h3>
+        <div class="small">
+          Preparado para conectar su PDF.
+        </div>
+        <button class="btn" data-ficha="6-11">
+          Abrir
+        </button>
+      </div>
+
+      <div class="ficha">
+        <div class="num">05</div>
+        <h3>NNA 12–17 años</h3>
+        <div class="small">
+          Preparado para conectar su PDF.
+        </div>
+        <button class="btn" data-ficha="12-17">
+          Abrir
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
 </main>
+
 
 <main id="fichaPage" class="hidden">
 
   <div class="card">
-    <div class="crumb" id="backCar">← Volver al CAR</div>
+
+    <div class="crumb" id="backCar" style="cursor:pointer;color:var(--muted)">
+      ← Volver al CAR
+    </div>
+
     <h2 id="fichaTitle" style="margin-top:9px"></h2>
-    <div class="badges">
+
+    <div>
       <span class="badge" id="carBadge"></span>
       <span class="badge" id="visitBadge"></span>
     </div>
+
   </div>
 
+
   <div id="pendingFichas" class="card hidden">
+
     <h2>Instrumento preparado</h2>
-    <div class="small">La ficha está creada en la plataforma. Para importar automáticamente su PDF necesito el PDF dinámico real de ese instrumento.</div>
+
+    <div class="small">
+      La pantalla ya está creada. Para activar la importación automática
+      de este instrumento necesitamos su PDF dinámico real.
+    </div>
+
   </div>
+
 
   <div id="ficha03" class="hidden">
 
     <div class="card">
-      <h2>Cargar PDF dinámico</h2>
-      <div class="small">Puedes seleccionar una o varias hojas PDF pertenecientes a la misma visita.</div>
 
-      <div class="topbar" style="margin-top:10px">
-        <button class="btn primary" id="pdfBtn">Cargar PDF</button>
-        <input id="pdfInput" class="hidden" type="file" accept=".pdf,application/pdf" multiple>
-        <button class="btn" id="newVisitBtn">Nueva visita</button>
+      <h2>Cargar PDF dinámicos</h2>
+
+      <div class="small">
+        Selecciona uno o varios PDF de la misma visita.
+        Cada PDF puede contener hasta 10 NNA. El sistema los acumula
+        en una sola supervisión y mantiene una única VISITA_ID.
+      </div>
+
+      <div class="toolbar" style="margin-top:10px">
+
+        <button class="btn primary" id="pdfBtn">
+          Cargar PDF
+        </button>
+
+        <input
+          id="pdfInput"
+          class="hidden"
+          type="file"
+          multiple
+          accept=".pdf,application/pdf">
+
+        <button class="btn" id="newVisitBtn">
+          Nueva visita
+        </button>
+
         <span class="status" id="importStatus"></span>
+
       </div>
 
       <div id="importList" class="import-list"></div>
+
     </div>
 
+
     <div class="card">
+
       <h2>Datos de la supervisión</h2>
 
       <div class="grid">
@@ -147,62 +277,32 @@ main{max-width:1200px;margin:18px auto;padding:0 14px}.hidden{display:none!impor
         </div>
 
       </div>
+
     </div>
 
+
     <div class="card">
+
       <h2>Niñas / niños</h2>
-      <div class="children" id="children"></div>
+
+      <div id="children"></div>
+
     </div>
 
+
     <div class="card">
+
       <h2>Lista de cotejo</h2>
 
       <div class="small">
         Cada indicador puede quedar en Sí, No o vacío.
+        Si importas varias hojas, aparecerán agrupadas de 10 NNA por hoja.
       </div>
 
-      <div class="tablewrap" style="margin-top:8px">
+      <div id="checklistPages"></div>
 
-        <table>
-
-          <thead>
-
-            <tr>
-              <th>Indicador</th>
-              <th colspan="2">N°1</th>
-              <th colspan="2">N°2</th>
-              <th colspan="2">N°3</th>
-              <th colspan="2">N°4</th>
-              <th colspan="2">N°5</th>
-              <th colspan="2">N°6</th>
-              <th colspan="2">N°7</th>
-              <th colspan="2">N°8</th>
-              <th colspan="2">N°9</th>
-              <th colspan="2">N°10</th>
-            </tr>
-
-            <tr>
-              <th></th>
-              <th>SI</th><th>NO</th>
-              <th>SI</th><th>NO</th>
-              <th>SI</th><th>NO</th>
-              <th>SI</th><th>NO</th>
-              <th>SI</th><th>NO</th>
-              <th>SI</th><th>NO</th>
-              <th>SI</th><th>NO</th>
-              <th>SI</th><th>NO</th>
-              <th>SI</th><th>NO</th>
-              <th>SI</th><th>NO</th>
-            </tr>
-
-          </thead>
-
-          <tbody id="checkBody"></tbody>
-
-        </table>
-
-      </div>
     </div>
+
 
     <div class="card">
 
@@ -234,6 +334,7 @@ main{max-width:1200px;margin:18px auto;padding:0 14px}.hidden{display:none!impor
 
     </div>
 
+
     <div class="card">
 
       <button class="btn primary" id="saveBtn">
@@ -243,6 +344,7 @@ main{max-width:1200px;margin:18px auto;padding:0 14px}.hidden{display:none!impor
       <span class="status" id="saveStatus"></span>
 
     </div>
+
 
     <div class="card hidden" id="history">
 
@@ -256,16 +358,26 @@ main{max-width:1200px;margin:18px auto;padding:0 14px}.hidden{display:none!impor
 
 </main>
 
+
 <main id="adminPage" class="hidden">
 
   <div class="card">
-    <div class="crumb" id="backAdmin">← Volver</div>
-    <h2 style="margin-top:9px">Administración de CAR</h2>
-    <div class="small">
-      Aquí puedes agregar CAR nuevos y archivar CAR existentes.
-      Archivar no elimina el historial de supervisiones.
+
+    <div class="crumb" id="backAdmin" style="cursor:pointer;color:var(--muted)">
+      ← Volver
     </div>
+
+    <h2 style="margin-top:9px">
+      Administración de CAR
+    </h2>
+
+    <div class="small">
+      El directorio "CAR 2026 (Julio)" es la fuente principal.
+      Aquí solo administras estado, archivado y CAR nuevos.
+    </div>
+
   </div>
+
 
   <div class="card">
 
@@ -283,13 +395,20 @@ main{max-width:1200px;margin:18px auto;padding:0 14px}.hidden{display:none!impor
 
     </div>
 
-    <div class="topbar" style="margin-top:10px">
+    <div class="toolbar" style="margin-top:10px">
+
       <button class="btn primary" id="adminLoad">
         Cargar CAR
       </button>
+
+      <button class="btn" id="processJSON">
+        Procesar JSON
+      </button>
+
     </div>
 
   </div>
+
 
   <div class="card">
 
@@ -327,9 +446,14 @@ main{max-width:1200px;margin:18px auto;padding:0 14px}.hidden{display:none!impor
         <input id="aDist">
       </div>
 
+      <div class="field">
+        <label>UBIGEO</label>
+        <input id="aUbigeo">
+      </div>
+
     </div>
 
-    <div class="topbar" style="margin-top:10px">
+    <div class="toolbar" style="margin-top:10px">
 
       <button class="btn primary" id="addCar">
         Agregar CAR
@@ -341,6 +465,7 @@ main{max-width:1200px;margin:18px auto;padding:0 14px}.hidden{display:none!impor
 
   </div>
 
+
   <div class="card">
 
     <h2>CAR registrados</h2>
@@ -350,6 +475,7 @@ main{max-width:1200px;margin:18px auto;padding:0 14px}.hidden{display:none!impor
   </div>
 
 </main>
+
 
 <script>
 
@@ -376,10 +502,6 @@ const FICHAS = {
 
 };
 
-
-// ============================================================
-// INDICADORES 0-3
-// ============================================================
 
 const INDICATORS = [
 
@@ -441,13 +563,10 @@ const INDICATORS = [
 ];
 
 
-const FLAT_INDICATORS =
-  INDICATORS
-    .flatMap(
-      function(x) {
-        return x[1];
-      }
-    );
+const FLAT =
+  INDICATORS.flatMap(
+    x => x[1]
+  );
 
 
 const state = {
@@ -460,44 +579,41 @@ const state = {
 
   id: null,
 
-  children:
-    Array.from(
-      {
-        length: 10
-      },
-      function() {
+  children: [],
 
-        return {
-          nombre: "",
-          edad: "",
-          sexo: ""
-        };
+  answers: {},
 
-      }
-    ),
-
-  answers: {}
+  files: []
 
 };
 
 
 const $ =
-  function(id) {
-    return document.getElementById(id);
-  };
+  id =>
+    document.getElementById(
+      id
+    );
 
 
 function show(id) {
+
   $(id)
     .classList
-    .remove("hidden");
+    .remove(
+      "hidden"
+    );
+
 }
 
 
 function hide(id) {
+
   $(id)
     .classList
-    .add("hidden");
+    .add(
+      "hidden"
+    );
+
 }
 
 
@@ -508,22 +624,22 @@ function esc(value) {
       ? ""
       : value
   )
-  .replace(
-    /[&<>"']/g,
-    function(char) {
+    .replace(
+      /[&<>"']/g,
+      function(char) {
 
-      return {
+        return {
 
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
 
-      }[char];
+        }[char];
 
-    }
-  );
+      }
+    );
 
 }
 
@@ -539,18 +655,26 @@ function today() {
     "-" +
     String(
       d.getMonth() + 1
-    ).padStart(2, "0") +
+    ).padStart(
+      2,
+      "0"
+    ) +
     "-" +
     String(
       d.getDate()
-    ).padStart(2, "0")
+    ).padStart(
+      2,
+      "0"
+    )
 
   );
 
 }
 
 
-function makeId(prefix) {
+function makeId(
+  prefix
+) {
 
   return (
 
@@ -558,7 +682,10 @@ function makeId(prefix) {
     "-" +
     Math.random()
       .toString(36)
-      .slice(2, 10)
+      .slice(
+        2,
+        10
+      )
       .toUpperCase()
 
   );
@@ -580,23 +707,25 @@ async function api(
       API,
       {
 
-        method: "POST",
+        method:
+          "POST",
 
         headers: {
+
           "Content-Type":
             "application/json"
+
         },
 
         body:
-          JSON.stringify(
-            Object.assign(
-              {
-                action:
-                  action
-              },
-              payload || {}
-            )
-          )
+          JSON.stringify({
+
+            action:
+              action,
+
+            ...(payload || {})
+
+          })
 
       }
     );
@@ -619,10 +748,10 @@ async function api(
   } catch (error) {
 
     throw new Error(
-      "Respuesta no válida del servidor: " +
-      text.slice(
+      "Vercel no recibió JSON de Apps Script: " +
+      text.substring(
         0,
-        250
+        300
       )
     );
 
@@ -647,151 +776,114 @@ async function api(
 }
 
 
-// ============================================================
-// INICIO
-// ============================================================
+async function apiGet() {
 
-async function loadRecent() {
+  const response =
+    await fetch(
+      API
+    );
+
+  const text =
+    await response.text();
+
+
+  let data;
 
   try {
 
-    const data =
-      await api(
-        "list",
-        {
-          filters: {}
-        }
-      );
-
-
-    if (
-      !data.records.length
-    ) {
-
-      $("recentList")
-        .textContent =
-        "No hay supervisiones registradas.";
-
-      return;
-
-    }
-
-
-    $("recentList")
-      .innerHTML =
-      data.records
-        .slice(
-          0,
-          10
-        )
-        .map(
-          function(record) {
-
-            return `
-
-              <div class="record">
-
-                <b>
-                  ${esc(record.carId || "Sin CAR")}
-                </b>
-
-                <span>
-                  ${esc(record.hogar || "")}
-                  ·
-                  ${esc(record.tipoFicha || "")}
-                </span>
-
-                <span>
-                  ${esc(record.fecha || "")}
-                </span>
-
-                <button
-                  type="button"
-                  data-recent="${esc(record.id)}">
-
-                  Abrir
-
-                </button>
-
-              </div>
-
-            `;
-
-          }
-        )
-        .join("");
-
-
-    document
-      .querySelectorAll(
-        "[data-recent]"
-      )
-      .forEach(
-        function(button) {
-
-          button.onclick =
-            async function() {
-
-              try {
-
-                const data =
-                  await api(
-                    "get",
-                    {
-                      id:
-                        button.dataset
-                          .recent
-                    }
-                  );
-
-
-                state.car =
-                  (
-                    await api(
-                      "getCAR",
-                      {
-                        carId:
-                          data.record
-                            .carId
-                      }
-                    )
-                  ).car;
-
-
-                openFicha(
-                  data.record
-                    .tipoFicha ||
-                  "0-3"
-                );
-
-
-                fillRecord(
-                  data.record
-                );
-
-              } catch (error) {
-
-                alert(
-                  error.message
-                );
-
-              }
-
-            };
-
-        }
+    data =
+      JSON.parse(
+        text
       );
 
   } catch (error) {
 
-    $("recentList")
+    throw new Error(
+      "La API no devuelve JSON."
+    );
+
+  }
+
+  return data;
+
+}
+
+
+// ============================================================
+// CONEXIÓN
+// ============================================================
+
+async function checkConnection() {
+
+  try {
+
+    const data =
+      await apiGet();
+
+
+    if (
+      data.version ===
+      "2026.08.30"
+    ) {
+
+      $("apiCheck")
+        .className =
+        "api-check ok";
+
+
+      $("apiCheck")
+        .textContent =
+        "✓ Google Apps Script conectado · versión " +
+        data.version;
+
+
+      $("globalStatus")
+        .textContent =
+        "Conectado ✓";
+
+    } else {
+
+      $("apiCheck")
+        .className =
+        "api-check bad";
+
+
+      $("apiCheck")
+        .textContent =
+        "⚠️ Apps Script responde, pero es una versión antigua. Actualiza el despliegue /exec.";
+
+
+      $("globalStatus")
+        .textContent =
+        "Revisar Apps Script";
+
+    }
+
+  } catch (error) {
+
+    $("apiCheck")
+      .className =
+      "api-check bad";
+
+
+    $("apiCheck")
       .textContent =
-      "No se pudieron cargar las supervisiones.";
+      "✗ No se pudo conectar con Apps Script: " +
+      error.message;
+
+
+    $("globalStatus")
+      .textContent =
+      "Sin conexión";
 
   }
 
 }
 
+
+// ============================================================
+// CAR
+// ============================================================
 
 async function searchCAR() {
 
@@ -803,7 +895,7 @@ async function searchCAR() {
 
   $("carResults")
     .innerHTML =
-    "<div class='small'>Buscando...</div>";
+    "<div class='help'>Buscando...</div>";
 
 
   try {
@@ -818,109 +910,116 @@ async function searchCAR() {
       );
 
 
-    renderCARs(
+    if (
+      !data.cars.length
+    ) {
+
+      $("carResults")
+        .innerHTML =
+        "<div class='help'>No se encontraron CAR activos.</div>";
+
+      return;
+
+    }
+
+
+    $("carResults")
+      .innerHTML =
       data.cars
-    );
+        .map(
+          function(car) {
+
+            return `
+
+              <div class="car-result">
+
+                <div>
+
+                  <b>
+                    ${esc(
+                      car.carId
+                    )}
+                    —
+                    ${esc(
+                      car.nombre
+                    )}
+                  </b>
+
+                  <div class="meta">
+
+                    ${esc(
+                      car.tipo
+                    )}
+                    ·
+                    ${esc(
+                      car.departamento
+                    )}
+                    ·
+                    ${esc(
+                      car.provincia
+                    )}
+                    ·
+                    ${esc(
+                      car.distrito
+                    )}
+
+                  </div>
+
+                </div>
+
+
+                <button
+                  type="button"
+                  class="btn primary"
+                  data-car="${esc(
+                    car.carId
+                  )}">
+
+                  Entrar al CAR
+
+                </button>
+
+              </div>
+
+            `;
+
+          }
+        )
+        .join("");
+
+
+    document
+      .querySelectorAll(
+        "[data-car]"
+      )
+      .forEach(
+        function(button) {
+
+          button.onclick =
+            function() {
+
+              openCAR(
+                button
+                  .dataset
+                  .car
+              );
+
+            };
+
+        }
+      );
 
   } catch (error) {
 
     $("carResults")
       .innerHTML =
-      "<div class='small'>Error: " +
-      esc(error.message) +
+      "<div class='help' style='color:#b91c1c'>" +
+      esc(
+        error.message
+      ) +
       "</div>";
 
   }
-
-}
-
-
-function renderCARs(
-  cars
-) {
-
-  if (
-    !cars.length
-  ) {
-
-    $("carResults")
-      .innerHTML =
-      "<div class='small'>No se encontraron CAR activos.</div>";
-
-    return;
-
-  }
-
-
-  $("carResults")
-    .innerHTML =
-    cars
-      .map(
-        function(car) {
-
-          return `
-
-            <div class="car-result">
-
-              <div>
-
-                <b>
-                  ${esc(car.carId)}
-                  —
-                  ${esc(car.nombre)}
-                </b>
-
-                <div class="meta">
-
-                  ${esc(car.tipo)}
-                  ·
-                  ${esc(car.departamento)}
-                  ·
-                  ${esc(car.provincia)}
-                  ·
-                  ${esc(car.distrito)}
-
-                </div>
-
-              </div>
-
-
-              <button
-                class="btn primary"
-                type="button"
-                data-car="${esc(car.carId)}">
-
-                Entrar al CAR
-
-              </button>
-
-            </div>
-
-          `;
-
-        }
-      )
-      .join("");
-
-
-  document
-    .querySelectorAll(
-      "[data-car]"
-    )
-    .forEach(
-      function(button) {
-
-        button.onclick =
-          function() {
-
-            openCAR(
-              button.dataset.car
-            );
-
-          };
-
-      }
-    );
 
 }
 
@@ -929,64 +1028,46 @@ async function openCAR(
   carId
 ) {
 
-  try {
-
-    const data =
-      await api(
-        "getCAR",
-        {
-          carId:
-            carId
-        }
-      );
-
-
-    state.car =
-      data.car;
-
-
-    hide(
-      "homePage"
-    );
-
-    hide(
-      "fichaPage"
-    );
-
-    hide(
-      "adminPage"
-    );
-
-    show(
-      "carPage"
+  const data =
+    await api(
+      "getCAR",
+      {
+        carId:
+          carId
+      }
     );
 
 
-    $("selectedCarName")
-      .textContent =
-      state.car.nombre;
+  state.car =
+    data.car;
 
 
-    $("selectedCarMeta")
-      .textContent =
-      "Código " +
-      state.car.carId +
-      " · " +
-      state.car.tipo +
-      " · " +
-      state.car.departamento +
-      " · " +
-      state.car.provincia +
-      " · " +
-      state.car.distrito;
+  hide(
+    "homePage"
+  );
 
-  } catch (error) {
+  show(
+    "carPage"
+  );
 
-    alert(
-      error.message
-    );
 
-  }
+  $("selectedCarName")
+    .textContent =
+    state.car.nombre;
+
+
+  $("selectedCarMeta")
+    .textContent =
+    "Código " +
+    state.car.carId +
+    " · " +
+    state.car.tipo +
+    " · " +
+    state.car.departamento +
+    " · " +
+    state.car.provincia +
+    " · " +
+    state.car.distrito;
 
 }
 
@@ -1002,38 +1083,28 @@ function openFicha(
   state.ficha =
     ficha;
 
-
   state.id =
     null;
-
 
   state.visitaId =
     makeId(
       "VIS"
     );
 
-
-  hide(
-    "homePage"
-  );
+  state.files =
+    [];
 
   hide(
     "carPage"
-  );
-
-  hide(
-    "adminPage"
   );
 
   show(
     "fichaPage"
   );
 
-
   $("fichaTitle")
     .textContent =
     FICHAS[ficha];
-
 
   $("carBadge")
     .textContent =
@@ -1041,17 +1112,14 @@ function openFicha(
     " · " +
     state.car.nombre;
 
-
   $("visitBadge")
     .textContent =
     "Visita " +
     state.visitaId;
 
-
   hide(
     "history"
   );
-
 
   if (
     ficha === "0-3"
@@ -1087,27 +1155,14 @@ function resetForm() {
   state.id =
     null;
 
-
   state.children =
-    Array.from(
-      {
-        length: 10
-      },
-      function() {
-
-        return {
-          nombre: "",
-          edad: "",
-          sexo: ""
-        };
-
-      }
-    );
-
+    [];
 
   state.answers =
     {};
 
+  state.files =
+    [];
 
   [
     "hogar",
@@ -1119,43 +1174,51 @@ function resetForm() {
     "rep3",
     "rep4"
   ]
-  .forEach(
-    function(id) {
+    .forEach(
+      function(id) {
 
-      $(id).value =
-        "";
+        $(id).value =
+          "";
 
-    }
-  );
-
+      }
+    );
 
   $("fecha")
     .value =
     today();
 
-
   $("importList")
     .innerHTML =
     "";
-
 
   $("importStatus")
     .textContent =
     "";
 
-
   $("saveStatus")
     .textContent =
     "";
 
-
   renderChildren();
-  renderChecklist();
+  renderChecklists();
 
 }
 
 
 function renderChildren() {
+
+  if (
+    !state.children.length
+  ) {
+
+    $("children")
+      .innerHTML =
+      "<div class='help'>Aún no se han cargado NNA.</div>";
+
+    return;
+
+  }
+
 
   $("children")
     .innerHTML =
@@ -1168,7 +1231,7 @@ function renderChildren() {
             <div class="child">
 
               <h3>
-                Niño N°${index + 1}
+                NNA ${index + 1}
               </h3>
 
               <div class="childgrid">
@@ -1178,8 +1241,11 @@ function renderChildren() {
                   <label>Nombre</label>
 
                   <input
-                    id="name_${index}"
-                    value="${esc(child.nombre)}">
+                    data-child="${index}"
+                    data-field="nombre"
+                    value="${esc(
+                      child.nombre
+                    )}">
 
                 </div>
 
@@ -1189,8 +1255,11 @@ function renderChildren() {
                   <label>Edad</label>
 
                   <input
-                    id="age_${index}"
-                    value="${esc(child.edad)}">
+                    data-child="${index}"
+                    data-field="edad"
+                    value="${esc(
+                      child.edad
+                    )}">
 
                 </div>
 
@@ -1200,8 +1269,11 @@ function renderChildren() {
                   <label>Sexo</label>
 
                   <input
-                    id="sex_${index}"
-                    value="${esc(child.sexo)}">
+                    data-child="${index}"
+                    data-field="sexo"
+                    value="${esc(
+                      child.sexo
+                    )}">
 
                 </div>
 
@@ -1216,51 +1288,27 @@ function renderChildren() {
       .join("");
 
 
-  state.children
+  $("children")
+    .querySelectorAll(
+      "[data-child]"
+    )
     .forEach(
-      function(child,index) {
+      function(input) {
 
-        $(
-          "name_" +
-          index
-        ).oninput =
+        input.oninput =
           function() {
 
-            child.nombre =
-              $(
-                "name_" +
-                index
-              ).value;
-
-          };
-
-
-        $(
-          "age_" +
-          index
-        ).oninput =
-          function() {
-
-            child.edad =
-              $(
-                "age_" +
-                index
-              ).value;
-
-          };
-
-
-        $(
-          "sex_" +
-          index
-        ).oninput =
-          function() {
-
-            child.sexo =
-              $(
-                "sex_" +
-                index
-              ).value;
+            state
+              .children[
+                Number(
+                  input.dataset
+                    .child
+                )
+              ][
+                input.dataset
+                  .field
+              ] =
+              input.value;
 
           };
 
@@ -1270,151 +1318,285 @@ function renderChildren() {
 }
 
 
-function renderChecklist() {
+function buildChecklistPage(
+  startIndex,
+  count
+) {
 
-  let html =
+  let html = `
+
+    <div class="page-group">
+
+      <div class="help" style="margin-bottom:7px">
+
+        Hoja ${
+          Math.floor(
+            startIndex / 10
+          ) + 1
+        }
+        · NNA ${
+          startIndex + 1
+        }–${
+          startIndex + count
+        }
+
+      </div>
+
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>
+                Indicador
+              </th>
+
+              ${
+                Array.from(
+                  {length: count},
+                  function(_,i) {
+
+                    return `
+                      <th>
+                        N°${
+                          startIndex + i + 1
+                        }
+                      </th>
+                    `;
+
+                  }
+                )
+                  .join("")
+
+              }
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+  `;
+
+  let last =
     "";
 
+  FLAT.forEach(
+    function(label,indicatorIndex) {
 
-  let lastArea =
-    "";
+      let area =
+        "";
 
+      INDICATORS.some(
+        function(section) {
 
-  INDICATORS.forEach(
-    function(section) {
+          if (
+            section[1]
+              .indexOf(
+                label
+              ) >= 0
+          ) {
 
-      const area =
-        section[0];
+            area =
+              section[0];
 
+            return true;
 
-      const questions =
-        section[1];
+          }
 
+          return false;
+
+        }
+      );
 
       if (
         area !==
-        lastArea
+        last
       ) {
 
         html += `
 
           <tr class="cat">
 
-            <td colspan="21">
-              ${esc(area)}
+            <td colspan="${
+              count + 1
+            }">
+
+              ${esc(
+                area
+              )}
+
             </td>
 
           </tr>
 
         `;
 
-
-        lastArea =
+        last =
           area;
 
       }
 
 
-      questions.forEach(
-        function(question) {
+      html += `
 
-          const indicatorIndex =
-            FLAT_INDICATORS
-              .indexOf(
-                question
-              );
+        <tr>
 
+          <td>
+            ${esc(
+              label
+            )}
+          </td>
 
-          html += `
-
-            <tr>
-
-              <td>
-                ${esc(question)}
-              </td>
-
-          `;
+      `;
 
 
-          for (
-            let child = 0;
-            child < 10;
-            child++
-          ) {
+      for (
+        let local = 0;
+        local < count;
+        local++
+      ) {
 
-            const key =
-              child +
-              "_" +
-              indicatorIndex;
+        const childIndex =
+          startIndex +
+          local;
 
+        const key =
+          childIndex +
+          "_" +
+          indicatorIndex;
 
-            const value =
-              state.answers[key]
-              || "";
-
-
-            html += `
-
-              <td>
-
-                <div class="ans">
-
-                  <button
-                    type="button"
-                    data-key="${key}"
-                    data-value="SI"
-                    class="${
-                      value === "SI"
-                        ? "active"
-                        : ""
-                    }">
-
-                    ✓
-
-                  </button>
+        const value =
+          state.answers[key]
+          || "";
 
 
-                  <button
-                    type="button"
-                    data-key="${key}"
-                    data-value="NO"
-                    class="no ${
-                      value === "NO"
-                        ? "active"
-                        : ""
-                    }">
+        html += `
 
-                    ✓
+          <td>
 
-                  </button>
+            <div class="choice">
 
-                </div>
+              <button
+                type="button"
+                data-answer="${key}"
+                data-value="SI"
+                class="${
+                  value ===
+                  "SI"
+                    ? "active"
+                    : ""
+                }">
 
-              </td>
+                Sí
 
-            `;
-
-          }
+              </button>
 
 
-          html +=
-            "</tr>";
+              <button
+                type="button"
+                data-answer="${key}"
+                data-value="NO"
+                class="no ${
+                  value ===
+                  "NO"
+                    ? "active"
+                    : ""
+                }">
 
-        }
-      );
+                No
+
+              </button>
+
+            </div>
+
+          </td>
+
+        `;
+
+      }
+
+
+      html +=
+        "</tr>";
 
     }
   );
 
 
-  $("checkBody")
-    .innerHTML =
+  html += `
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  return html;
+
+}
+
+
+function renderChecklists() {
+
+  const container =
+    $("checklistPages");
+
+
+  if (
+    !state.children.length
+  ) {
+
+    container.innerHTML =
+      "<div class='help'>Aún no hay respuestas cargadas.</div>";
+
+    return;
+
+  }
+
+
+  let html =
+    "";
+
+
+  for (
+    let start = 0;
+    start < state.children.length;
+    start += 10
+  ) {
+
+    const count =
+      Math.min(
+        10,
+        state.children.length -
+        start
+      );
+
+    html +=
+      buildChecklistPage(
+        start,
+        count
+      );
+
+  }
+
+
+  container.innerHTML =
     html;
 
 
-  $("checkBody")
+  container
     .querySelectorAll(
-      "[data-key]"
+      "[data-answer]"
     )
     .forEach(
       function(button) {
@@ -1424,8 +1606,7 @@ function renderChecklist() {
 
             const key =
               button.dataset
-                .key;
-
+                .answer;
 
             const value =
               button.dataset
@@ -1439,7 +1620,7 @@ function renderChecklist() {
                 : value;
 
 
-            renderChecklist();
+            renderChecklists();
 
           };
 
@@ -1449,300 +1630,11 @@ function renderChecklist() {
 }
 
 
-function collectRecord() {
-
-  state.children
-    .forEach(
-      function(child,index) {
-
-        child.nombre =
-          $(
-            "name_" +
-            index
-          ).value;
-
-
-        child.edad =
-          $(
-            "age_" +
-            index
-          ).value;
-
-
-        child.sexo =
-          $(
-            "sex_" +
-            index
-          ).value;
-
-      }
-    );
-
-
-  return {
-
-    id:
-      state.id,
-
-    carId:
-      state.car.carId,
-
-    visitaId:
-      state.visitaId,
-
-    tipoFicha:
-      state.ficha,
-
-    archivo:
-      "",
-
-    form: {
-
-      hogar:
-        $("hogar").value,
-
-      ciudad:
-        $("ciudad").value,
-
-      fecha:
-        $("fecha").value,
-
-      informante:
-        $("informante").value,
-
-      cargo:
-        $("cargo").value,
-
-      reportes: {
-
-        rep35:
-          $("rep1").value,
-
-        rep36:
-          $("rep2").value,
-
-        rep37:
-          $("rep3").value,
-
-        rep38:
-          $("rep4").value
-
-      }
-
-    },
-
-    children:
-      state.children.map(
-        function(child) {
-
-          return Object.assign(
-            {},
-            child
-          );
-
-        }
-      ),
-
-    answers:
-      Object.assign(
-        {},
-        state.answers
-      )
-
-  };
-
-}
-
-
-function fillRecord(
-  record
-) {
-
-  state.id =
-    record.id ||
-    null;
-
-
-  state.visitaId =
-    record.visitaId ||
-    state.visitaId;
-
-
-  const form =
-    record.form ||
-    {};
-
-
-  $("hogar")
-    .value =
-    form.hogar ||
-    "";
-
-
-  $("ciudad")
-    .value =
-    form.ciudad ||
-    "";
-
-
-  $("fecha")
-    .value =
-    form.fecha ||
-    today();
-
-
-  $("informante")
-    .value =
-    form.informante ||
-    "";
-
-
-  $("cargo")
-    .value =
-    form.cargo ||
-    "";
-
-
-  const reportes =
-    form.reportes ||
-    {};
-
-
-  $("rep1")
-    .value =
-    reportes.rep35 ||
-    form.rep1 ||
-    "";
-
-
-  $("rep2")
-    .value =
-    reportes.rep36 ||
-    form.rep2 ||
-    "";
-
-
-  $("rep3")
-    .value =
-    reportes.rep37 ||
-    form.rep3 ||
-    "";
-
-
-  $("rep4")
-    .value =
-    reportes.rep38 ||
-    form.rep4 ||
-    "";
-
-
-  state.children =
-    Array.isArray(
-      record.children
-    )
-      ? record.children
-      : state.children;
-
-
-  state.answers =
-    record.answers ||
-    {};
-
-
-  renderChildren();
-  renderChecklist();
-
-
-  $("visitBadge")
-    .textContent =
-    "Visita " +
-    state.visitaId;
-
-}
-
-
-async function saveCurrent() {
-
-  try {
-
-    $("saveBtn")
-      .disabled =
-      true;
-
-
-    $("saveStatus")
-      .textContent =
-      "Guardando...";
-
-
-    const data =
-      await api(
-        "save",
-        {
-          record:
-            collectRecord()
-        }
-      );
-
-
-    state.id =
-      data.id;
-
-
-    $("saveStatus")
-      .textContent =
-      data.updated
-        ? "Actualizado ✓ " +
-          data.id
-        : "Registrado ✓ " +
-          data.id;
-
-
-    loadRecent();
-
-
-  } catch (error) {
-
-    alert(
-      error.message
-    );
-
-
-    $("saveStatus")
-      .textContent =
-      "Error al guardar";
-
-  } finally {
-
-    $("saveBtn")
-      .disabled =
-      false;
-
-  }
-
-}
-
-
 // ============================================================
 // PDF DINÁMICO
 // ============================================================
-//
-// Este importador usa los nombres internos del PDF 0-3:
-//
-// Texto31  -> Hogar
-// Texto34  -> Ciudad
-// Campo de fecha1 -> Fecha
-// Texto32  -> Informante
-// Texto33  -> Cargo
-//
-// Texto1, Texto10, Texto2...Texto9 -> Sexo 1..10
-// Texto11...Texto30 -> Nombre/Edad 1..10
-// Texto35...Texto38 -> Reportes
-//
-// Grupo1...Grupo250 -> 25 indicadores x 10 NNA
-// ============================================================
 
-function pdfTextField(
+function pdfText(
   form,
   name
 ) {
@@ -1751,12 +1643,16 @@ function pdfTextField(
 
     return (
       form
-        .getTextField(name)
+        .getTextField(
+          name
+        )
         .getText() ||
       ""
     );
 
-  } catch (error) {
+  } catch (
+    error
+  ) {
 
     return "";
 
@@ -1765,7 +1661,7 @@ function pdfTextField(
 }
 
 
-function pdfRadioField(
+function pdfRadio(
   form,
   name
 ) {
@@ -1782,7 +1678,9 @@ function pdfRadioField(
     )
       .toUpperCase();
 
-  } catch (error) {
+  } catch (
+    error
+  ) {
 
     return "";
 
@@ -1870,7 +1768,7 @@ function normalizeDate(
 }
 
 
-const SEX_FIELD_NAMES = [
+const SEX_FIELDS = [
 
   "Texto1",
   "Texto10",
@@ -1886,289 +1784,736 @@ const SEX_FIELD_NAMES = [
 ];
 
 
-async function importPDF(
+async function readDynamicPDF(
   file
 ) {
 
-  try {
-
-    $("importStatus")
-      .textContent =
-      "Leyendo PDF...";
+  const bytes =
+    await file.arrayBuffer();
 
 
-    const bytes =
-      await file.arrayBuffer();
+  if (
+    !window.PDFLib
+  ) {
+
+    throw new Error(
+      "No se pudo cargar PDF-LIB."
+    );
+
+  }
 
 
-    if (
-      !window.PDFLib
-    ) {
-
-      throw new Error(
-        "No se pudo cargar PDF-LIB."
+  const pdf =
+    await PDFLib
+      .PDFDocument
+      .load(
+        bytes,
+        {
+          updateMetadata:
+            false
+        }
       );
 
-    }
+
+  const form =
+    pdf.getForm();
 
 
-    const pdf =
-      await PDFLib
-        .PDFDocument
-        .load(
-          bytes,
-          {
-            updateMetadata:
-              false
-          }
+  const fields =
+    form.getFields();
+
+
+  const names =
+    new Set(
+      fields.map(
+        function(field) {
+
+          return field.getName();
+
+        }
+      )
+    );
+
+
+  if (
+    !names.has(
+      "Grupo1"
+    ) ||
+    !names.has(
+      "Grupo250"
+    )
+  ) {
+
+    throw new Error(
+      "Este archivo no conserva los campos Grupo1–Grupo250. Selecciona el PDF dinámico original."
+    );
+
+  }
+
+
+  const imported = {
+
+    fileName:
+      file.name,
+
+    form: {
+
+      hogar:
+        pdfText(
+          form,
+          "Texto31"
+        ),
+
+      ciudad:
+        pdfText(
+          form,
+          "Texto34"
+        ),
+
+      fecha:
+        normalizeDate(
+          pdfText(
+            form,
+            "Campo de fecha1"
+          )
+        ),
+
+      informante:
+        pdfText(
+          form,
+          "Texto32"
+        ),
+
+      cargo:
+        pdfText(
+          form,
+          "Texto33"
+        ),
+
+      rep35:
+        pdfText(
+          form,
+          "Texto35"
+        ),
+
+      rep36:
+        pdfText(
+          form,
+          "Texto36"
+        ),
+
+      rep37:
+        pdfText(
+          form,
+          "Texto37"
+        ),
+
+      rep38:
+        pdfText(
+          form,
+          "Texto38"
+        )
+
+    },
+
+    children: [],
+
+    answers: {}
+
+  };
+
+
+  imported.children =
+    Array.from(
+      {
+        length: 10
+      },
+      function(_,index) {
+
+        return {
+
+          nombre:
+            pdfText(
+              form,
+              "Texto" +
+              (
+                11 +
+                index * 2
+              )
+            ),
+
+          edad:
+            pdfText(
+              form,
+              "Texto" +
+              (
+                12 +
+                index * 2
+              )
+            ),
+
+          sexo:
+            pdfText(
+              form,
+              SEX_FIELDS[
+                index
+              ]
+            )
+
+        };
+
+      }
+    );
+
+
+  let count =
+    0;
+
+
+  for (
+    let child = 0;
+    child < 10;
+    child++
+  ) {
+
+    for (
+      let indicator = 0;
+      indicator < 25;
+      indicator++
+    ) {
+
+      const group =
+        "Grupo" +
+        (
+          child * 25 +
+          indicator +
+          1
         );
 
 
-    const form =
-      pdf.getForm();
-
-
-    const fields =
-      form
-        .getFields();
-
-
-    const names =
-      new Set(
-        fields.map(
-          function(field) {
-
-            return field.getName();
-
-          }
-        )
-      );
-
-
-    if (
-      !names.has(
-        "Grupo1"
-      ) ||
-      !names.has(
-        "Grupo250"
-      )
-    ) {
-
-      throw new Error(
-        "El archivo no conserva los campos Grupo1–Grupo250. Selecciona el PDF dinámico original."
-      );
-
-    }
-
-
-    state.id =
-      null;
-
-
-    $("hogar")
-      .value =
-      pdfTextField(
-        form,
-        "Texto31"
-      );
-
-
-    $("ciudad")
-      .value =
-      pdfTextField(
-        form,
-        "Texto34"
-      );
-
-
-    $("fecha")
-      .value =
-      normalizeDate(
-        pdfTextField(
+      const value =
+        pdfRadio(
           form,
-          "Campo de fecha1"
-        )
-      );
+          group
+        );
 
 
-    $("informante")
-      .value =
-      pdfTextField(
-        form,
-        "Texto32"
-      );
-
-
-    $("cargo")
-      .value =
-      pdfTextField(
-        form,
-        "Texto33"
-      );
-
-
-    state.children =
-      Array.from(
-        {
-          length: 10
-        },
-        function(_,index) {
-
-          return {
-
-            nombre:
-              pdfTextField(
-                form,
-                "Texto" +
-                (
-                  11 +
-                  index * 2
-                )
-              ),
-
-            edad:
-              pdfTextField(
-                form,
-                "Texto" +
-                (
-                  12 +
-                  index * 2
-                )
-              ),
-
-            sexo:
-              pdfTextField(
-                form,
-                SEX_FIELD_NAMES[
-                  index
-                ]
-              )
-
-          };
-
-        }
-      );
-
-
-    $("rep1")
-      .value =
-      pdfTextField(
-        form,
-        "Texto35"
-      );
-
-
-    $("rep2")
-      .value =
-      pdfTextField(
-        form,
-        "Texto36"
-      );
-
-
-    $("rep3")
-      .value =
-      pdfTextField(
-        form,
-        "Texto37"
-      );
-
-
-    $("rep4")
-      .value =
-      pdfTextField(
-        form,
-        "Texto38"
-      );
-
-
-    state.answers =
-      {};
-
-
-    let count =
-      0;
-
-
-    for (
-      let child = 0;
-      child < 10;
-      child++
-    ) {
-
-      for (
-        let indicator = 0;
-        indicator < 25;
-        indicator++
+      if (
+        value === "SI" ||
+        value === "NO"
       ) {
 
-        const group =
-          "Grupo" +
-          (
-            child * 25 +
-            indicator +
-            1
-          );
+        imported.answers[
+          child +
+          "_" +
+          indicator
+        ] =
+        value;
 
-
-        const value =
-          pdfRadioField(
-            form,
-            group
-          );
-
-
-        if (
-          value === "SI" ||
-          value === "NO"
-        ) {
-
-          state.answers[
-            child +
-            "_" +
-            indicator
-          ] =
-            value;
-
-
-          count++;
-
-        }
+        count++;
 
       }
 
     }
 
-
-    renderChildren();
-    renderChecklist();
+  }
 
 
-    $("importStatus")
-      .textContent =
-      "PDF cargado ✓ · " +
-      fields.length +
-      " campos · " +
-      count +
-      " respuestas";
+  return {
+
+    imported:
+      imported,
+
+    fieldCount:
+      fields.length,
+
+    responseCount:
+      count
+
+  };
+
+}
 
 
-  } catch (error) {
+// ============================================================
+// MULTI-PDF: ACUMULAR HOJAS
+// ============================================================
 
-    console.error(
+async function importFiles(
+  files
+) {
+
+  if (
+    !files.length
+  ) {
+
+    return;
+
+  }
+
+
+  $("importStatus")
+    .textContent =
+    "Leyendo " +
+    files.length +
+    " PDF(s)...";
+
+
+  let addedChildren =
+    0;
+
+  let totalResponses =
+    0;
+
+
+  for (
+    const file of files
+  ) {
+
+    try {
+
+      const result =
+        await readDynamicPDF(
+          file
+        );
+
+
+      const imported =
+        result.imported;
+
+
+      const offset =
+        state.children.length;
+
+
+      imported.children
+        .forEach(
+          function(child) {
+
+            state.children
+              .push(
+                Object.assign(
+                  {},
+                  child
+                )
+              );
+
+          }
+        );
+
+
+      Object.keys(
+        imported.answers
+      )
+        .forEach(
+          function(key) {
+
+            const parts =
+              key.split("_");
+
+            const child =
+              Number(
+                parts[0]
+              );
+
+            const indicator =
+              Number(
+                parts[1]
+              );
+
+
+            state.answers[
+              (
+                offset +
+                child
+              ) +
+              "_" +
+              indicator
+            ] =
+              imported.answers[
+                key
+              ];
+
+          }
+        );
+
+
+      if (
+        !$("hogar").value &&
+        imported.form.hogar
+      ) {
+
+        $("hogar").value =
+          imported.form.hogar;
+
+      }
+
+
+      if (
+        !$("ciudad").value &&
+        imported.form.ciudad
+      ) {
+
+        $("ciudad").value =
+          imported.form.ciudad;
+
+      }
+
+
+      if (
+        !$("fecha").value &&
+        imported.form.fecha
+      ) {
+
+        $("fecha").value =
+          imported.form.fecha;
+
+      }
+
+
+      if (
+        !$("informante").value &&
+        imported.form.informante
+      ) {
+
+        $("informante").value =
+          imported.form.informante;
+
+      }
+
+
+      if (
+        !$("cargo").value &&
+        imported.form.cargo
+      ) {
+
+        $("cargo").value =
+          imported.form.cargo;
+
+      }
+
+
+      if (
+        !$("rep1").value &&
+        imported.form.rep35
+      ) {
+
+        $("rep1").value =
+          imported.form.rep35;
+
+      }
+
+
+      if (
+        !$("rep2").value &&
+        imported.form.rep36
+      ) {
+
+        $("rep2").value =
+          imported.form.rep36;
+
+      }
+
+
+      if (
+        !$("rep3").value &&
+        imported.form.rep37
+      ) {
+
+        $("rep3").value =
+          imported.form.rep37;
+
+      }
+
+
+      if (
+        !$("rep4").value &&
+        imported.form.rep38
+      ) {
+
+        $("rep4").value =
+          imported.form.rep38;
+
+      }
+
+
+      state.files
+        .push(
+          file.name
+        );
+
+
+      addedChildren +=
+        imported.children.length;
+
+      totalResponses +=
+        result.responseCount;
+
+
+      $("importList")
+        .insertAdjacentHTML(
+          "beforeend",
+          `
+            <div class="import-item">
+
+              <b>
+                ${esc(
+                  file.name
+                )}
+              </b>
+
+              · ${
+                imported.children.length
+              } NNA
+
+              · ${
+                result.responseCount
+              } respuestas
+
+              <span style="color:green">
+                ✓ cargado
+              </span>
+
+            </div>
+          `
+        );
+
+
+    } catch (
       error
+    ) {
+
+      $("importList")
+        .insertAdjacentHTML(
+          "beforeend",
+          `
+            <div
+              class="import-item"
+              style="color:#b91c1c">
+
+              <b>
+                ${esc(
+                  file.name
+                )}
+              </b>
+
+              · ${
+                esc(
+                  error.message
+                )
+              }
+
+            </div>
+          `
+        );
+
+    }
+
+  }
+
+
+  renderChildren();
+  renderChecklists();
+
+
+  $("importStatus")
+    .textContent =
+    state.files.length +
+    " PDF(s) cargados · " +
+    addedChildren +
+    " NNA acumulados · " +
+    totalResponses +
+    " respuestas";
+
+}
+
+
+// ============================================================
+// GUARDAR
+// ============================================================
+
+function collectRecord() {
+
+  state.children
+    .forEach(
+      function(child,index) {
+
+        const nameInput =
+          document.querySelector(
+            `[data-child="${index}"][data-field="nombre"]`
+          );
+
+        const ageInput =
+          document.querySelector(
+            `[data-child="${index}"][data-field="edad"]`
+          );
+
+        const sexInput =
+          document.querySelector(
+            `[data-child="${index}"][data-field="sexo"]`
+          );
+
+        if (
+          nameInput
+        ) {
+          child.nombre =
+            nameInput.value;
+        }
+
+        if (
+          ageInput
+        ) {
+          child.edad =
+            ageInput.value;
+        }
+
+        if (
+          sexInput
+        ) {
+          child.sexo =
+            sexInput.value;
+        }
+
+      }
     );
 
 
-    $("importStatus")
-      .textContent =
-      "Error al cargar PDF";
+  return {
 
+    id:
+      state.id,
+
+    carId:
+      state.car.carId,
+
+    visitaId:
+      state.visitaId,
+
+    tipoFicha:
+      state.ficha,
+
+    archivo:
+      state.files.join(
+        " | "
+      ),
+
+    form: {
+
+      hogar:
+        $("hogar").value,
+
+      ciudad:
+        $("ciudad").value,
+
+      fecha:
+        $("fecha").value,
+
+      informante:
+        $("informante").value,
+
+      cargo:
+        $("cargo").value,
+
+      reportes: {
+
+        rep35:
+          $("rep1").value,
+
+        rep36:
+          $("rep2").value,
+
+        rep37:
+          $("rep3").value,
+
+        rep38:
+          $("rep4").value
+
+      }
+
+    },
+
+    children:
+      state.children.map(
+        function(child) {
+
+          return Object.assign(
+            {},
+            child
+          );
+
+        }
+      ),
+
+    answers:
+      Object.assign(
+        {},
+        state.answers
+      )
+
+  };
+
+}
+
+
+async function saveCurrent() {
+
+  try {
+
+    $("saveBtn")
+      .disabled =
+      true;
+
+
+    $("saveStatus")
+      .textContent =
+      "Guardando...";
+
+
+    const data =
+      await api(
+        "save",
+        {
+
+          record:
+            collectRecord()
+
+        }
+      );
+
+
+    state.id =
+      data.id;
+
+
+    $("saveStatus")
+      .textContent =
+      data.updated
+        ? "Actualizado ✓ " +
+          data.id
+        : "Registrado ✓ " +
+          data.id;
+
+
+    loadRecent();
+
+
+  } catch (
+    error
+  ) {
+
+    $("saveStatus")
+      .textContent =
+      "Error";
 
     alert(
-      error.message ||
-      "No se pudo leer el PDF."
+      error.message
     );
+
+  } finally {
+
+    $("saveBtn")
+      .disabled =
+      false;
 
   }
 
@@ -2187,6 +2532,7 @@ async function loadHistory() {
       await api(
         "list",
         {
+
           filters: {
 
             carId:
@@ -2203,62 +2549,67 @@ async function loadHistory() {
     );
 
 
-    if (
-      !data.records.length
-    ) {
-
-      $("historyList")
-        .textContent =
-        "No hay supervisiones para este CAR.";
-
-
-      return;
-
-    }
-
-
     $("historyList")
       .innerHTML =
-      data.records
-        .map(
-          function(record) {
+      data.records.length
 
-            return `
+        ? data.records
+          .map(
+            function(record) {
 
-              <div class="record">
+              return `
 
-                <b>
-                  ${esc(record.fecha)}
-                </b>
+                <div class="record">
 
-                <span>
-                  ${esc(record.tipoFicha)}
-                  ·
-                  ${esc(record.visitaId)}
-                </span>
+                  <b>
+                    ${esc(
+                      record.fecha
+                    )}
+                  </b>
 
-                <span>
-                  ${esc(record.archivo || "")}
-                </span>
+                  <span>
 
-                <button
-                  type="button"
-                  data-history="${esc(record.id)}">
+                    ${esc(
+                      record.tipoFicha
+                    )}
+                    ·
+                    ${esc(
+                      record.visitaId
+                    )}
 
-                  Abrir
+                  </span>
 
-                </button>
+                  <span>
 
-              </div>
+                    ${esc(
+                      record.archivo
+                    )}
 
-            `;
+                  </span>
 
-          }
-        )
-        .join("");
+                  <button
+                    type="button"
+                    class="btn"
+                    data-history="${esc(
+                      record.id
+                    )}">
+
+                    Abrir
+
+                  </button>
+
+                </div>
+
+              `;
+
+            }
+          )
+          .join("")
+
+        : "<div class='help'>No hay supervisiones para este CAR.</div>";
 
 
-    document
+    $("history")
       .querySelectorAll(
         "[data-history]"
       )
@@ -2274,11 +2625,28 @@ async function loadHistory() {
                   await api(
                     "get",
                     {
+
                       id:
                         button.dataset
                           .history
+
                     }
                   );
+
+
+                state.car =
+                  (
+                    await api(
+                      "getCAR",
+                      {
+
+                        carId:
+                          data.record
+                            .carId
+
+                      }
+                    )
+                  ).car;
 
 
                 state.ficha =
@@ -2296,7 +2664,9 @@ async function loadHistory() {
                   data.record
                 );
 
-              } catch (error) {
+              } catch (
+                error
+              ) {
 
                 alert(
                   error.message
@@ -2309,7 +2679,468 @@ async function loadHistory() {
         }
       );
 
-  } catch (error) {
+  } catch (
+    error
+  ) {
+
+    alert(
+      error.message
+    );
+
+  }
+
+}
+
+
+function fillRecord(
+  record
+) {
+
+  state.id =
+    record.id ||
+    null;
+
+  state.visitaId =
+    record.visitaId ||
+    state.visitaId;
+
+  state.files =
+    record.archivo
+      ? record.archivo
+          .split(
+            " | "
+          )
+      : [];
+
+
+  const form =
+    record.form ||
+    {};
+
+
+  $("hogar").value =
+    form.hogar ||
+    "";
+
+  $("ciudad").value =
+    form.ciudad ||
+    "";
+
+  $("fecha").value =
+    form.fecha ||
+    today();
+
+  $("informante").value =
+    form.informante ||
+    "";
+
+  $("cargo").value =
+    form.cargo ||
+    "";
+
+
+  const reports =
+    form.reportes ||
+    {};
+
+
+  $("rep1").value =
+    reports.rep35 ||
+    form.rep1 ||
+    "";
+
+  $("rep2").value =
+    reports.rep36 ||
+    form.rep2 ||
+    "";
+
+  $("rep3").value =
+    reports.rep37 ||
+    form.rep3 ||
+    "";
+
+  $("rep4").value =
+    reports.rep38 ||
+    form.rep4 ||
+    "";
+
+
+  state.children =
+    Array.isArray(
+      record.children
+    )
+      ? record.children
+          .map(
+            function(child) {
+
+              return Object.assign(
+                {},
+                child
+              );
+
+            }
+          )
+      : [];
+
+
+  state.answers =
+    record.answers ||
+    {};
+
+
+  renderChildren();
+  renderChecklists();
+
+
+  $("visitBadge")
+    .textContent =
+    "Visita " +
+    state.visitaId;
+
+}
+
+
+// ============================================================
+// RECIENTES
+// ============================================================
+
+async function loadRecent() {
+
+  try {
+
+    const data =
+      await api(
+        "list",
+        {
+
+          filters: {}
+
+        }
+      );
+
+
+    if (
+      !data.records.length
+    ) {
+
+      $("recentList")
+        .textContent =
+        "No hay supervisiones registradas.";
+
+      return;
+
+    }
+
+
+    $("recentList")
+      .innerHTML =
+      data.records
+        .slice(
+          0,
+          10
+        )
+        .map(
+          function(record) {
+
+            return `
+
+              <div class="record">
+
+                <b>
+                  ${
+                    esc(
+                      record.carId ||
+                      "Sin CAR"
+                    )
+                  }
+                </b>
+
+                <span>
+                  ${esc(
+                    record.hogar ||
+                    ""
+                  )}
+                  ·
+                  ${esc(
+                    record.tipoFicha ||
+                    ""
+                  )}
+                </span>
+
+                <span>
+                  ${esc(
+                    record.fecha ||
+                    ""
+                  )}
+                </span>
+
+                <button
+                  type="button"
+                  class="btn"
+                  data-recent="${esc(
+                    record.id
+                  )}">
+
+                  Abrir
+
+                </button>
+
+              </div>
+
+            `;
+
+          }
+        )
+        .join("");
+
+
+    document
+      .querySelectorAll(
+        "[data-recent]"
+      )
+      .forEach(
+        function(button) {
+
+          button.onclick =
+            async function() {
+
+              try {
+
+                const data =
+                  await api(
+                    "get",
+                    {
+
+                      id:
+                        button.dataset
+                          .recent
+
+                    }
+                  );
+
+
+                state.car =
+                  (
+                    await api(
+                      "getCAR",
+                      {
+
+                        carId:
+                          data.record
+                            .carId
+
+                      }
+                    )
+                  ).car;
+
+
+                openFicha(
+                  data.record
+                    .tipoFicha ||
+                  "0-3"
+                );
+
+
+                fillRecord(
+                  data.record
+                );
+
+              } catch (
+                error
+              ) {
+
+                alert(
+                  error.message
+                );
+
+              }
+
+            };
+
+        }
+      );
+
+  } catch (
+    error
+  ) {
+
+    $("recentList")
+      .textContent =
+      "No se pudieron cargar las supervisiones: " +
+      error.message;
+
+  }
+
+}
+
+
+// ============================================================
+// ADMIN
+// ============================================================
+
+async function loadAdminList() {
+
+  try {
+
+    const data =
+      await api(
+        "adminListCAR",
+        {
+
+          adminPin:
+            $("adminPin").value,
+
+          query:
+            $("adminSearch").value
+
+        }
+      );
+
+
+    if (
+      !data.cars.length
+    ) {
+
+      $("adminList")
+        .innerHTML =
+        "<div class='help'>No hay resultados.</div>";
+
+      return;
+
+    }
+
+
+    $("adminList")
+      .innerHTML =
+      data.cars
+        .map(
+          function(car) {
+
+            return `
+
+              <div class="admin-row">
+
+                <b>
+                  ${esc(
+                    car.carId
+                  )}
+                </b>
+
+                <span>
+
+                  ${esc(
+                    car.nombre
+                  )}
+
+                  <br>
+
+                  <span class="small">
+
+                    ${esc(
+                      car.departamento
+                    )}
+                    ·
+                    ${esc(
+                      car.provincia
+                    )}
+                    ·
+                    ${esc(
+                      car.distrito
+                    )}
+
+                  </span>
+
+                </span>
+
+                <span>
+                  ${esc(
+                    car.estado
+                  )}
+                </span>
+
+                <button
+                  type="button"
+                  class="btn"
+                  data-archive="${esc(
+                    car.carId
+                  )}">
+
+                  ${
+                    car.estado ===
+                    "ARCHIVADO"
+                      ? "Activar"
+                      : "Archivar"
+                  }
+
+                </button>
+
+              </div>
+
+            `;
+
+          }
+        )
+        .join("");
+
+
+    $("adminList")
+      .querySelectorAll(
+        "[data-archive]"
+      )
+      .forEach(
+        function(button) {
+
+          button.onclick =
+            async function() {
+
+              try {
+
+                const archive =
+                  button.textContent
+                    .trim()
+                    .toLowerCase() ===
+                  "archivar";
+
+
+                await api(
+                  "adminArchiveCAR",
+                  {
+
+                    adminPin:
+                      $("adminPin")
+                        .value,
+
+                    carId:
+                      button.dataset
+                        .archive,
+
+                    archive:
+                      archive
+
+                  }
+                );
+
+
+                loadAdminList();
+
+              } catch (
+                error
+              ) {
+
+                alert(
+                  error.message
+                );
+
+              }
+
+            };
+
+        }
+      );
+
+  } catch (
+    error
+  ) {
 
     alert(
       error.message
@@ -2345,21 +3176,6 @@ $("carSearch")
   };
 
 
-$("backHome")
-  .onclick =
-  function() {
-
-    hide(
-      "carPage"
-    );
-
-    show(
-      "homePage"
-    );
-
-  };
-
-
 $("homeBtn")
   .onclick =
   function() {
@@ -2374,6 +3190,21 @@ $("homeBtn")
 
     hide(
       "adminPage"
+    );
+
+    show(
+      "homePage"
+    );
+
+  };
+
+
+$("backHome")
+  .onclick =
+  function() {
+
+    hide(
+      "carPage"
     );
 
     show(
@@ -2446,66 +3277,14 @@ $("pdfInput")
 
 
     if (
-      !files.length
+      files.length
     ) {
 
-      return;
+      importFiles(
+        files
+      );
 
     }
-
-
-    $("importList")
-      .innerHTML =
-      "";
-
-
-    files.forEach(
-      async function(file) {
-
-        const item =
-          document.createElement(
-            "div"
-          );
-
-
-        item.className =
-          "import-item";
-
-
-        item.textContent =
-          file.name +
-          " · procesando...";
-
-
-        $("importList")
-          .appendChild(
-            item
-          );
-
-
-        try {
-
-          await importPDF(
-            file
-          );
-
-
-          item.textContent =
-            file.name +
-            " · cargado ✓";
-
-
-        } catch (error) {
-
-          item.textContent =
-            file.name +
-            " · error";
-
-
-        }
-
-      }
-    );
 
 
     event.target.value =
@@ -2580,145 +3359,19 @@ $("backAdmin")
 
 $("adminLoad")
   .onclick =
-  async function() {
-
-    try {
-
-      const data =
-        await api(
-          "adminListCAR",
-          {
-
-            adminPin:
-              $("adminPin")
-                .value,
-
-            query:
-              $("adminSearch")
-                .value
-
-          }
-        );
+  loadAdminList;
 
 
-      if (
-        !data.cars.length
-      ) {
+$("adminSearch")
+  .onkeydown =
+  function(event) {
 
-        $("adminList")
-          .innerHTML =
-          "<div class='small'>No hay resultados.</div>";
+    if (
+      event.key ===
+      "Enter"
+    ) {
 
-
-        return;
-
-      }
-
-
-      $("adminList")
-        .innerHTML =
-        data.cars
-          .map(
-            function(car) {
-
-              return `
-
-                <div class="adminrow">
-
-                  <b>
-                    ${esc(car.carId)}
-                  </b>
-
-                  <span>
-                    ${esc(car.nombre)}
-                  </span>
-
-                  <span>
-                    ${esc(car.estado)}
-                  </span>
-
-                  <button
-                    class="btn"
-                    type="button"
-                    data-archive="${esc(car.carId)}">
-
-                    ${
-                      car.estado ===
-                      "ARCHIVADO"
-                        ? "Activar"
-                        : "Archivar"
-                    }
-
-                  </button>
-
-                </div>
-
-              `;
-
-            }
-          )
-          .join("");
-
-
-      $("adminList")
-        .querySelectorAll(
-          "[data-archive]"
-        )
-        .forEach(
-          function(button) {
-
-            button.onclick =
-              async function() {
-
-                try {
-
-                  const archive =
-                    button.textContent
-                      .trim()
-                      .toLowerCase() ===
-                    "archivar";
-
-
-                  await api(
-                    "adminArchiveCAR",
-                    {
-
-                      adminPin:
-                        $("adminPin")
-                          .value,
-
-                      carId:
-                        button.dataset
-                          .archive,
-
-                      archive:
-                        archive
-
-                    }
-                  );
-
-
-                  $("adminLoad")
-                    .click();
-
-                } catch (error) {
-
-                  alert(
-                    error.message
-                  );
-
-                }
-
-              };
-
-          }
-        );
-
-    } catch (error) {
-
-      alert(
-        error.message
-      );
+      loadAdminList();
 
     }
 
@@ -2749,7 +3402,10 @@ $("addCar")
           $("aProv").value,
 
         distrito:
-          $("aDist").value
+          $("aDist").value,
+
+        ubigeo:
+          $("aUbigeo").value
 
       };
 
@@ -2776,11 +3432,11 @@ $("addCar")
         " agregado ✓";
 
 
-      $("adminLoad")
-        .click();
+      loadAdminList();
 
-
-    } catch (error) {
+    } catch (
+      error
+    ) {
 
       alert(
         error.message
@@ -2791,9 +3447,51 @@ $("addCar")
   };
 
 
-renderChildren();
-renderChecklist();
+$("processJSON")
+  .onclick =
+  async function() {
+
+    try {
+
+      const data =
+        await api(
+          "procesarJSON",
+          {
+
+            adminPin:
+              $("adminPin").value
+
+          }
+        );
+
+
+      alert(
+        "Proceso terminado.\n\n" +
+        "Fichas: " +
+        data.fichas +
+        "\nNNA: " +
+        data.nna +
+        "\nRespuestas: " +
+        data.respuestas
+      );
+
+    } catch (
+      error
+    ) {
+
+      alert(
+        error.message
+      );
+
+    }
+
+  };
+
+
+checkConnection();
 loadRecent();
+renderChildren();
+renderChecklists();
 
 </script>
 </body>
