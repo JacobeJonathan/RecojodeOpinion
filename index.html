@@ -214,7 +214,7 @@ input,textarea,select{width:100%;padding:10px;border:1px solid var(--border);bor
       <h2>Cargar PDF dinámicos</h2>
 
       <div class="small">
-        Selecciona uno o varios PDF dinámicos de la misma visita.
+        Selecciona uno o varios PDF de la misma visita.
         Cada PDF puede contener hasta 10 NNA. El sistema los acumula
         en una sola supervisión y mantiene una única VISITA_ID.
       </div>
@@ -253,11 +253,11 @@ input,textarea,select{width:100%;padding:10px;border:1px solid var(--border);bor
 
         <div class="field">
           <label>Nombre del hogar</label>
-          <input id="hogar" readonly>
+          <input id="hogar">
         </div>
 
         <div class="field">
-          <label>Ciudad / distrito</label>
+          <label>Ciudad</label>
           <input id="ciudad">
         </div>
 
@@ -276,10 +276,6 @@ input,textarea,select{width:100%;padding:10px;border:1px solid var(--border);bor
           <input id="cargo">
         </div>
 
-      </div>
-
-      <div class="help" style="margin-top:8px">
-        El nombre del hogar y la ciudad/distrito se cargan automáticamente desde el CAR seleccionado. El informante y el cargo se completan al importar el PDF dinámico o manualmente.
       </div>
 
     </div>
@@ -1138,16 +1134,6 @@ function openFicha(
     );
 
     resetForm();
-
-    // El CAR ya fue seleccionado en el paso anterior.
-    // Traemos automáticamente sus datos del directorio.
-    $("hogar").value =
-      state.car.nombre || "";
-
-    $("ciudad").value =
-      state.car.distrito ||
-      state.car.provincia ||
-      "";
 
   } else {
 
