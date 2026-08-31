@@ -1,4 +1,6 @@
-const APPS_SCRIPT_URL = process.env.APPS_SCRIPT_URL;
+const APPS_SCRIPT_URL =
+  process.env.APPS_SCRIPT_URL ||
+  process.env.WEB_APP_URL;
 
 module.exports = async function handler(req, res) {
 
@@ -17,63 +19,80 @@ module.exports = async function handler(req, res) {
     "GET,POST,OPTIONS"
   );
 
-  if (req.method === "OPTIONS") {
+  if (
+    req.method === "OPTIONS"
+  ) {
     return res.status(204).end();
   }
 
-  if (!APPS_SCRIPT_URL) {
+  if (
+    !APPS_SCRIPT_URL
+  ) {
 
-    return res.status(500).json({
-      ok: false,
-      error: "Falta APPS_SCRIPT_URL en Vercel."
-    });
+    return res
+      .status(500)
+      .json({
+
+        ok: false,
+
+        error:
+          "Falta APPS_SCRIPT_URL en Vercel."
+
+      });
 
   }
 
   try {
 
-    const body =
-      req.method === "POST"
-        ? (
-            typeof req.body === "string"
-              ? req.body
-              : JSON.stringify(req.body || {})
-          )
-        : undefined;
+    const isGet =
+      req.method === "GET";
 
+    let body;
 
-    const response =
+    if (!isGet) {
+
+      body =
+        typeof req.body === "string"
+          ? req.body
+          : JSON.stringify(
+              req.body || {}
+            );
+
+    }
+
+    const upstream =
       await fetch(
         APPS_SCRIPT_URL,
         {
+
           method:
-            req.method === "GET"
+            isGet
               ? "GET"
               : "POST",
 
           headers:
-            req.method === "GET"
+            isGet
               ? {}
               : {
                   "Content-Type":
-                    "application/json"
+                    "text/plain;charset=utf-8"
                 },
 
           body:
-            body,
+            isGet
+              ? undefined
+              : body,
 
           redirect:
             "follow"
+
         }
       );
 
-
     const text =
-      await response.text();
-
+      await upstream.text();
 
     let data;
-
 
     try {
 
@@ -84,27 +103,31 @@ module.exports = async function handler(req, res) {
 
     } catch (error) {
 
-      return res.status(502).json({
+      return res
+        .status(502)
+        .json({
 
-        ok: false,
+          ok: false,
 
-        error:
-          "Apps Script no devolvió JSON.",
+          error:
+            "Apps Script no devolvió JSON.",
 
-        respuesta:
-          text.substring(
-            0,
-            300
-          )
+          upstreamStatus:
+            upstream.status,
 
-      });
+          upstreamPreview:
+            text.substring(
+              0,
+              500
+            )
+
+        });
 
     }
 
-
     return res
       .status(
-        response.ok
+        upstream.ok
           ? 200
           : 502
       )
@@ -112,18 +135,19 @@ module.exports = async function handler(req, res) {
         data
       );
 
-
   } catch (error) {
 
-    return res.status(500).json({
+    return res
+      .status(500)
+      .json({
 
-      ok: false,
+        ok: false,
 
-      error:
-        error.message ||
-        String(error)
+        error:
+          error.message ||
+          String(error)
 
-    });
+      });
 
   }
 
