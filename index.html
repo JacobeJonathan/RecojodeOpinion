@@ -4,130 +4,231 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sistema de Supervisión CAR</title>
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 <style>
-:root{--blue:#1d4ed8;--bg:#f5f7fb;--card:#fff;--border:#d9dee8;--text:#172033;--muted:#64748b}
+:root{--blue:#1d4ed8;--bg:#f5f7fb;--card:#fff;--border:#d9dee8;--text:#172033;--muted:#64748b;--soft:#eef2f7;--danger:#b91c1c}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,sans-serif;color:var(--text)}
-header{background:#fff;border-bottom:1px solid var(--border);padding:16px 24px;position:sticky;top:0;z-index:5}
+header{background:#fff;border-bottom:1px solid var(--border);padding:16px 24px}
 header h1{margin:0;font-size:21px}header p{margin:4px 0 0;color:var(--muted);font-size:13px}
-main{max-width:1200px;margin:22px auto;padding:0 16px}.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px}
+main{max-width:1200px;margin:20px auto;padding:0 16px}.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.field label{display:block;font-size:12px;font-weight:bold;margin-bottom:5px}
 input,textarea,select{width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;font-size:14px;background:#fff}textarea{min-height:90px}
-.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.btn{border:1px solid var(--border);background:#fff;padding:10px 14px;border-radius:8px;font-weight:bold;cursor:pointer}.btn.primary{background:var(--blue);color:white;border-color:var(--blue)}.btn.danger{color:#b91c1c}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.btn{border:1px solid var(--border);background:#fff;padding:10px 14px;border-radius:8px;font-weight:bold;cursor:pointer}.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}.btn.danger{color:var(--danger)}
 .status{margin-left:auto;font-size:13px;color:var(--muted)}.notice{background:#eff6ff;border:1px solid #bfdbfe;border-radius:9px;padding:10px;font-size:13px;margin-top:12px}
-.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:10px}table{border-collapse:collapse;width:100%;min-width:1100px}th,td{border-bottom:1px solid var(--border);padding:8px;text-align:center;font-size:12px}th{background:#eef2f7;position:sticky;top:0;z-index:2}th:first-child,td:first-child{text-align:left;min-width:310px;position:sticky;left:0;background:#fff;z-index:1}.cat td{background:#e9eef5!important;font-weight:bold;text-transform:uppercase;color:#475569}.choice{display:flex;justify-content:center;gap:4px}.choice button{font-size:11px;padding:6px 7px;border:1px solid var(--border);background:#fff;border-radius:6px;cursor:pointer}.choice button.active{border-color:var(--blue);background:#eff6ff;color:var(--blue);font-weight:bold}
+.hidden{display:none!important}.help{font-size:12px;color:var(--muted)}
+.searchbar{display:grid;grid-template-columns:1fr auto;gap:8px}.results{display:grid;gap:8px;margin-top:12px}.car-result{border:1px solid var(--border);background:#fff;border-radius:10px;padding:12px;display:flex;align-items:center;justify-content:space-between;gap:10px}.meta{font-size:12px;color:var(--muted)}
+.fichas{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.ficha{border:1px solid var(--border);border-radius:12px;padding:15px;min-height:160px;display:flex;flex-direction:column;background:#fff}.ficha .num{font-size:11px;color:var(--muted);margin-bottom:8px}.ficha h3{margin:0 0 8px;font-size:16px}.ficha button{margin-top:auto}
+.car-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.badge{display:inline-block;padding:5px 8px;background:#eef2ff;border-radius:999px;font-size:11px;margin-right:5px}
 .children{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.child{border:1px solid var(--border);border-radius:9px;padding:12px;background:#fafbfc}.child h3{font-size:14px;margin:0 0 9px}.childgrid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px}
-.hidden{display:none}.help{font-size:12px;color:var(--muted)}
-@media(max-width:800px){.grid,.children{grid-template-columns:1fr}.childgrid{grid-template-columns:1fr}}
+.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:10px}table{border-collapse:collapse;width:100%;min-width:1100px}th,td{border-bottom:1px solid var(--border);padding:8px;text-align:center;font-size:12px}th{background:#eef2f7;position:sticky;top:0}th:first-child,td:first-child{text-align:left;min-width:310px;position:sticky;left:0;background:#fff;z-index:1}.cat td{background:#e9eef5!important;font-weight:bold;text-transform:uppercase;color:#475569}.choice{display:flex;justify-content:center;gap:4px}.choice button{font-size:11px;padding:6px 7px;border:1px solid var(--border);background:#fff;border-radius:6px;cursor:pointer}.choice button.active{border-color:var(--blue);background:#eff6ff;color:var(--blue);font-weight:bold}
+.record{display:grid;grid-template-columns:150px 1fr 100px 120px 70px;gap:8px;align-items:center;padding:8px 0;border-top:1px solid #ddd;font-size:12px}.record:first-child{border-top:0}
+.admin-list{margin-top:12px;border:1px solid var(--border);border-radius:9px;overflow:auto}.admin-row{display:grid;grid-template-columns:120px 1fr 100px 90px;gap:8px;padding:8px;border-top:1px solid #ddd;align-items:center;font-size:12px}.admin-row:first-child{border-top:0}
+.import-list{display:grid;gap:7px;margin-top:8px}.import-item{padding:8px;border:1px solid var(--border);border-radius:7px;background:#fff}
+@media(max-width:800px){.grid,.children,.fichas{grid-template-columns:1fr}.childgrid{grid-template-columns:1fr}.searchbar{grid-template-columns:1fr}.car-result{flex-direction:column;align-items:flex-start}.record,.admin-row{grid-template-columns:1fr}.status{width:100%;margin:0}}
+@media print{header,.toolbar,.notice,#homePage,#carPage,#adminPage,.import-list{display:none!important}.card{border:0}}
 </style>
 </head>
 <body>
-<header><h1>Sistema de Supervisión CAR</h1><p>Lista de cotejo observacional · Niñas y niños 0–3 años</p></header>
-<main>
-<div class="card">
-  <div class="toolbar">
-    <button class="btn primary" id="newBtn">Nueva supervisión</button>
-    <button class="btn" id="loadBtn">Cargar registro</button>
-    <button class="btn" id="saveBtn">Registrar / actualizar</button>
-    <button class="btn" id="exportBtn">Exportar JSON</button>
-    <span class="status" id="status">Nueva supervisión</span>
+<header>
+  <h1>Sistema de Supervisión CAR</h1>
+  <p>CAR → instrumento → supervisión → PDF → Google Sheets</p>
+</header>
+
+<main id="homePage">
+  <div class="card">
+    <div class="toolbar">
+      <h2 style="margin:0">Buscar CAR</h2>
+      <button class="btn" id="adminBtn">Administración</button>
+    </div>
+    <div class="searchbar">
+      <input id="carSearch" placeholder="Código CAR o nombre del hogar...">
+      <button class="btn primary" id="searchBtn">Buscar</button>
+    </div>
+    <div class="help" style="margin-top:7px">Puedes buscar por código, nombre, departamento, provincia o distrito.</div>
+    <div id="carResults" class="results"></div>
   </div>
-  <div class="notice">El sistema asigna un <b>ID de registro</b>. Si vuelves a abrir y modificar una supervisión, se actualiza la misma fila de Google Sheets en lugar de crear otra.</div>
-</div>
 
-<div class="card">
-<h2>Datos de la supervisión</h2>
-<div class="grid">
-<div class="field"><label>Nombre del hogar</label><input id="hogar"></div>
-<div class="field"><label>Ciudad</label><input id="ciudad"></div>
-<div class="field"><label>Fecha</label><input id="fecha" type="date"></div>
-<div class="field"><label>Personal quien brinda información</label><input id="informante"></div>
-<div class="field"><label>Cargo</label><input id="cargo"></div>
-</div>
-</div>
+  <div class="card">
+    <h2>Supervisiones recientes</h2>
+    <div id="recentRecords" class="help">Cargando...</div>
+  </div>
+</main>
 
-<div class="card">
-<h2>Niñas / niños</h2>
-<div id="children" class="children"></div>
-</div>
+<main id="carPage" class="hidden">
+  <div class="card">
+    <div class="toolbar"><button class="btn" id="backHome">← Volver</button></div>
+    <div class="car-head">
+      <div>
+        <h2 id="carName" style="margin:0"></h2>
+        <div id="carMeta" class="meta" style="margin-top:5px"></div>
+      </div>
+      <button class="btn" id="historyBtn">Ver historial</button>
+    </div>
+  </div>
 
-<div class="card">
-<h2>Indicadores</h2>
-<p class="help">Cada indicador permite Sí, No o vacío. Si pulsas nuevamente la opción seleccionada, vuelve a quedar vacío.</p>
-<div id="checklist" class="table-wrap"></div>
-</div>
+  <div class="card">
+    <h2>Seleccionar instrumento</h2>
+    <div class="fichas">
+      <div class="ficha"><div class="num">01</div><h3>Lista de cotejo de discapacidad</h3><div class="help">Preparado para conectar su PDF.</div><button class="btn" data-ficha="DISCAPACIDAD">Abrir</button></div>
+      <div class="ficha"><div class="num">02</div><h3>NNA 0–3 años</h3><div class="help">PDF dinámico conectado.</div><button class="btn primary" data-ficha="0-3">Abrir</button></div>
+      <div class="ficha"><div class="num">03</div><h3>NNA 4–5 años</h3><div class="help">Preparado para conectar su PDF.</div><button class="btn" data-ficha="4-5">Abrir</button></div>
+      <div class="ficha"><div class="num">04</div><h3>NNA 6–11 años</h3><div class="help">Preparado para conectar su PDF.</div><button class="btn" data-ficha="6-11">Abrir</button></div>
+      <div class="ficha"><div class="num">05</div><h3>NNA 12–17 años</h3><div class="help">Preparado para conectar su PDF.</div><button class="btn" data-ficha="12-17">Abrir</button></div>
+    </div>
+  </div>
+</main>
 
-<div class="card">
-<h2>Reportes encontrados en la evaluación</h2>
-<div class="grid">
-<div class="field"><label>Reporte 1</label><textarea id="rep1"></textarea></div>
-<div class="field"><label>Reporte 2</label><textarea id="rep2"></textarea></div>
-<div class="field"><label>Observaciones generales</label><textarea id="obs"></textarea></div>
-</div>
-</div>
+<main id="fichaPage" class="hidden">
+  <div class="card">
+    <div class="toolbar"><button class="btn" id="backCar">← Volver al CAR</button></div>
+    <h2 id="fichaTitle"></h2>
+    <span class="badge" id="carBadge"></span><span class="badge" id="visitBadge"></span>
+  </div>
 
-<div class="card">
-<h2>Registros guardados</h2>
-<div id="records" class="help">Pulsa “Cargar registro” para consultar los registros de Google Sheets.</div>
-</div>
+  <div id="pendingPage" class="card hidden">
+    <h2>Instrumento preparado</h2>
+    <p class="help">Para activar la importación automática de este instrumento necesito su PDF dinámico real.</p>
+  </div>
+
+  <section id="form03" class="hidden">
+    <div class="card">
+      <h2>Cargar PDF</h2>
+      <p class="help">Selecciona uno o varios PDF dinámicos de la misma visita. El sistema los lee por nombre de campo y no por posición.</p>
+      <div class="toolbar">
+        <button class="btn primary" id="pdfBtn">Cargar PDF</button>
+        <input id="pdfInput" class="hidden" type="file" multiple accept=".pdf,application/pdf">
+        <button class="btn" id="newVisitBtn">Nueva visita</button>
+        <span id="importStatus" class="status"></span>
+      </div>
+      <div id="importList" class="import-list"></div>
+    </div>
+
+    <div class="card">
+      <h2>Datos de la supervisión</h2>
+      <div class="grid">
+        <div class="field"><label>Nombre del hogar</label><input id="hogar"></div>
+        <div class="field"><label>Ciudad</label><input id="ciudad"></div>
+        <div class="field"><label>Fecha</label><input id="fecha" type="date"></div>
+        <div class="field"><label>Personal quien brinda información</label><input id="informante"></div>
+        <div class="field"><label>Cargo</label><input id="cargo"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Niñas / niños</h2>
+      <div id="children" class="children"></div>
+    </div>
+
+    <div class="card">
+      <h2>Indicadores</h2>
+      <p class="help">Sí, No o vacío.</p>
+      <div id="checklist" class="table-wrap"></div>
+    </div>
+
+    <div class="card">
+      <h2>Reportes encontrados en la evaluación</h2>
+      <div class="grid">
+        <div class="field"><label>Reporte 1</label><textarea id="rep1"></textarea></div>
+        <div class="field"><label>Reporte 2</label><textarea id="rep2"></textarea></div>
+        <div class="field"><label>Reporte 3</label><textarea id="rep3"></textarea></div>
+        <div class="field"><label>Reporte 4</label><textarea id="rep4"></textarea></div>
+      </div>
+      <div class="toolbar" style="margin-top:10px"><button class="btn primary" id="saveBtn">Registrar / actualizar</button><span id="saveStatus" class="status"></span></div>
+    </div>
+
+    <div id="historyPanel" class="card hidden">
+      <h2>Historial del CAR</h2>
+      <div id="historyRecords"></div>
+    </div>
+  </section>
+</main>
+
+<main id="adminPage" class="hidden">
+  <div class="card">
+    <div class="toolbar"><button class="btn" id="backAdmin">← Volver</button><h2 style="margin:0">Administración</h2></div>
+    <p class="help">Aquí puedes actualizar el directorio, agregar CAR y archivarlos sin borrar su historial.</p>
+  </div>
+
+  <div class="card">
+    <div class="grid">
+      <div class="field"><label>PIN</label><input id="adminPin" type="password"></div>
+      <div class="field"><label>Buscar CAR</label><input id="adminSearch"></div>
+    </div>
+    <div class="toolbar" style="margin-top:10px">
+      <button class="btn primary" id="adminLoad">Cargar CAR</button>
+      <button class="btn" id="masterBtn">Actualizar CAR_MAESTRO desde directorio</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Agregar nuevo CAR</h2>
+    <div class="grid">
+      <div class="field"><label>Código CAR</label><input id="aId"></div>
+      <div class="field"><label>UBIGEO</label><input id="aUbigeo"></div>
+      <div class="field"><label>Nombre</label><input id="aNombre"></div>
+      <div class="field"><label>Tipo</label><input id="aTipo"></div>
+      <div class="field"><label>Departamento</label><input id="aDep"></div>
+      <div class="field"><label>Provincia</label><input id="aProv"></div>
+      <div class="field"><label>Distrito</label><input id="aDist"></div>
+    </div>
+    <div class="toolbar" style="margin-top:10px"><button class="btn primary" id="addCarBtn">Agregar CAR</button><span id="adminStatus" class="status"></span></div>
+  </div>
+
+  <div class="card">
+    <h2>CAR</h2>
+    <div id="adminList" class="admin-list"></div>
+  </div>
 </main>
 
 <script>
-const CONFIG={WEB_APP_URL:"PEGA_AQUI_LA_URL_DE_TU_WEB_APP_DE_APPS_SCRIPT"};
+const CONFIG={WEB_APP_URL:"https://script.google.com/macros/s/AKfycbx0pA_ZxK8J4X_qXEQegDHS37_Vcoi2DPXo2a5CetTQenbXFkgisJJeE4G87m4fsbl8Dw/exec"};
+const FICHAS={"DISCAPACIDAD":"Lista de cotejo de discapacidad","0-3":"NNA 0–3 años","4-5":"NNA 4–5 años","6-11":"NNA 6–11 años","12-17":"NNA 12–17 años"};
 const indicators=[
-["FÍSICAS","Talla y peso acorde a la edad cronológica"],
-["FÍSICAS","Problemas en la piel"],
-["FÍSICAS","Marcas de cicatrices, cortes, heridas."],
-["FÍSICAS","Moretones"],
-["FÍSICAS","Control de esfínteres de acuerdo a la edad correspondiente"],
+["FÍSICAS","Talla y peso acorde a la edad cronológica"],["FÍSICAS","Problemas en la piel"],["FÍSICAS","Marcas de cicatrices, cortes, heridas."],["FÍSICAS","Moretones"],["FÍSICAS","Control de esfínteres de acuerdo a la edad correspondiente"],
 ["EMOCIONALES","Tristeza"],["EMOCIONALES","Apatía"],["EMOCIONALES","Molesto/molesta"],["EMOCIONALES","Alegría"],["EMOCIONALES","Conductas agresivas/disruptivas"],
 ["SOCIALIZACIÓN","Sonríe"],["SOCIALIZACIÓN","Juega con otros niños"],["SOCIALIZACIÓN","Se aísla, se aparta"],["SOCIALIZACIÓN","Busca el contacto con el otro/a"],["SOCIALIZACIÓN","Pide con acto o palabras"],["SOCIALIZACIÓN","Responde con gestos, miradas y sonidos a estímulos externos"],
 ["LENGUAJE","Balbucea"],["LENGUAJE","Primeras palabras"],["LENGUAJE","Oración completa"],["LENGUAJE","Mutismo"],
 ["INDICADORES PSICOMOTORES","Se sienta, gatea"],["INDICADORES PSICOMOTORES","Primeros pasos, camina"],["INDICADORES PSICOMOTORES","Salta de un pie"],["INDICADORES PSICOMOTORES","Responde a su nombre cuando se le pide"],["INDICADORES PSICOMOTORES","Intenta llamar a otros por su nombre"]
 ];
-const state={id:null,children:Array.from({length:10},(_,i)=>({nombre:"",edad:"",sexo:""})),answers:{}};
+const state={car:null,ficha:null,visitaId:null,id:null,children:Array.from({length:10},()=>({nombre:"",edad:"",sexo:""})),answers:{}};
 const $=id=>document.getElementById(id);
-function today(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
-$("fecha").value=today();
-
-function renderChildren(){
-$("children").innerHTML=state.children.map((c,i)=>`<div class="child"><h3>Niño N°${i+1}</h3><div class="childgrid">
-<div class="field"><label>Nombre</label><input data-ci="${i}" data-f="nombre" value="${esc(c.nombre)}"></div>
-<div class="field"><label>Edad</label><input data-ci="${i}" data-f="edad" value="${esc(c.edad)}"></div>
-<div class="field"><label>Sexo</label><input data-ci="${i}" data-f="sexo" value="${esc(c.sexo)}"></div>
-</div></div>`).join("");
-document.querySelectorAll("[data-ci]").forEach(x=>x.addEventListener("input",()=>state.children[+x.dataset.ci][x.dataset.f]=x.value));
-}
-function renderChecklist(){
-let html="<table><thead><tr><th>Indicador</th>"+state.children.map((_,i)=>`<th>N°${i+1}</th>`).join("")+"</tr></thead><tbody>",last="";
-indicators.forEach(([cat,label],idx)=>{
-if(cat!==last){html+=`<tr class="cat"><td colspan="11">${cat}</td></tr>`;last=cat}
-html+=`<tr><td>${label}</td>`;
-state.children.forEach((_,i)=>{const k=`${i}_${idx}`,v=state.answers[k]||"";html+=`<td><div class="choice">
-<button type="button" class="${v==="SI"?"active":""}" data-k="${k}" data-v="SI">Sí</button>
-<button type="button" class="${v==="NO"?"active":""}" data-k="${k}" data-v="NO">No</button>
-</div></td>`});
-html+="</tr>";
-});html+="</tbody></table>";$("checklist").innerHTML=html;
-document.querySelectorAll("[data-k]").forEach(b=>b.addEventListener("click",()=>{const k=b.dataset.k,v=b.dataset.v;state.answers[k]=state.answers[k]===v?"":v;renderChecklist()}));
-}
+function show(id){$(id).classList.remove("hidden")}function hide(id){$(id).classList.add("hidden")}
 function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
-function collect(){
-return {id:state.id,form:{hogar:$("hogar").value,ciudad:$("ciudad").value,fecha:$("fecha").value,informante:$("informante").value,cargo:$("cargo").value,rep1:$("rep1").value,rep2:$("rep2").value,observaciones:$("obs").value},children:state.children,answers:state.answers};
-}
-function fill(d){
-state.id=d.id||null;const f=d.form||{};["hogar","ciudad","fecha","informante","cargo","rep1","rep2","obs"].forEach(k=>$(k).value=f[k]||"");
-state.children=d.children||state.children;state.answers=d.answers||{};renderChildren();renderChecklist();$("status").textContent=state.id?`Editando: ${state.id}`:"Nueva supervisión";
-}
+function newId(prefix){return prefix+"-"+Math.random().toString(36).slice(2,10).toUpperCase()}
+function today(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
 async function api(action,data={}){
-if(!CONFIG.WEB_APP_URL||CONFIG.WEB_APP_URL.includes("PEGA_AQUI"))throw new Error("Configura WEB_APP_URL en index.html.");
-const r=await fetch(CONFIG.WEB_APP_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action,...data})});
-const j=await r.json();if(!j.ok)throw new Error(j.error||"Error del servidor");return j;
+ if(!CONFIG.WEB_APP_URL||CONFIG.WEB_APP_URL.includes("PEGA_AQUI"))throw new Error("Configura WEB_APP_URL en index.html con la URL /exec de Apps Script.");
+ const r=await fetch(CONFIG.WEB_APP_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action,...data})});
+ const j=await r.json();if(!j.ok)throw new Error(j.error||"Error del servidor");return j;
 }
-$("saveBtn").onclick=async()=>{try{$("status").textContent="Guardando...";const j=await api("save",{record:collect()});state.id=j.id; $("status").textContent=`Guardado ✓ ${state.id}`;}catch(e){$("status").textContent=e.message}};
-$("loadBtn").onclick=async()=>{try{$("records").textContent="Cargando...";const j=await api("list");$("records").innerHTML=j.records.length?j.records.map(r=>`<div style="padding:9px;border-bottom:1px solid #ddd"><b>${esc(r.id)}</b> · ${esc(r.hogar)} · ${esc(r.fecha)} <button class="btn" data-load="${esc(r.id)}">Abrir</button></div>`).join(""):"No hay registros.";document.querySelectorAll("[data-load]").forEach(b=>b.onclick=async()=>{const x=await api("get",{id:b.dataset.load});fill(x.record)});}catch(e){$("records").textContent=e.message}};
-$("newBtn").onclick=()=>{if(!confirm("¿Crear una nueva supervisión?"))return;state.id=null;state.children=Array.from({length:10},()=>({nombre:"",edad:"",sexo:""}));state.answers={};["hogar","ciudad","informante","cargo","rep1","rep2","obs"].forEach(k=>$(k).value="");$("fecha").value=today();renderChildren();renderChecklist();$("status").textContent="Nueva supervisión"};
-$("exportBtn").onclick=()=>{const blob=new Blob([JSON.stringify(collect(),null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`supervision_${state.id||today()}.json`;a.click()};
-renderChildren();renderChecklist();
+async function searchCAR(){
+ try{const q=$("carSearch").value.trim();$("carResults").innerHTML="<div class='help'>Buscando...</div>";const r=await api("searchCAR",{query:q});$("carResults").innerHTML=r.cars.length?r.cars.map(c=>`<div class="car-result"><div><b>${esc(c.carId)} — ${esc(c.nombre)}</b><div class="meta">${esc(c.departamento)} · ${esc(c.provincia)} · ${esc(c.distrito)} · ${esc(c.tipo)}</div></div><button class="btn primary" data-car="${esc(c.carId)}">Entrar al CAR</button></div>`).join(""):"<div class='help'>No se encontraron CAR activos.</div>";document.querySelectorAll("[data-car]").forEach(b=>b.onclick=()=>openCAR(b.dataset.car))}catch(e){$("carResults").innerHTML="<div class='help'>Error: "+esc(e.message)+"</div>"}}
+async function openCAR(id){const r=await api("getCAR",{carId:id});state.car=r.car;hide("homePage");hide("fichaPage");hide("adminPage");show("carPage");$("carName").textContent=state.car.nombre;$("carMeta").textContent=`Código ${state.car.carId} · ${state.car.tipo} · ${state.car.departamento} · ${state.car.provincia} · ${state.car.distrito}`}
+function resetForm(){state.id=null;state.children=Array.from({length:10},()=>({nombre:"",edad:"",sexo:""}));state.answers={};["hogar","ciudad","informante","cargo","rep1","rep2","rep3","rep4"].forEach(id=>$(id).value="");$("fecha").value=today();renderChildren();renderChecklist();$("importList").innerHTML="";$("importStatus").textContent="";$("saveStatus").textContent=""}
+function openFicha(code){state.ficha=code;state.visitaId=newId("VIS");hide("carPage");show("fichaPage");hide("historyPanel");$("fichaTitle").textContent=FICHAS[code];$("carBadge").textContent=`${state.car.carId} · ${state.car.nombre}`;$("visitBadge").textContent=`Visita ${state.visitaId}`;if(code==="0-3"){show("form03");hide("pendingPage");resetForm()}else{hide("form03");show("pendingPage")}}
+function renderChildren(){$("children").innerHTML=state.children.map((c,i)=>`<div class="child"><h3>Niño N°${i+1}</h3><div class="childgrid"><div class="field"><label>Nombre</label><input data-c="${i}" data-f="nombre" value="${esc(c.nombre)}"></div><div class="field"><label>Edad</label><input data-c="${i}" data-f="edad" value="${esc(c.edad)}"></div><div class="field"><label>Sexo</label><input data-c="${i}" data-f="sexo" value="${esc(c.sexo)}"></div></div></div>`).join("");document.querySelectorAll("[data-c]").forEach(x=>x.addEventListener("input",()=>state.children[+x.dataset.c][x.dataset.f]=x.value))}
+function renderChecklist(){let html="<table><thead><tr><th>Indicador</th>"+state.children.map((_,i)=>`<th>N°${i+1}</th>`).join("")+"</tr></thead><tbody>",last="";indicators.forEach(([area,label],idx)=>{if(area!==last){html+=`<tr class="cat"><td colspan="11">${area}</td></tr>`;last=area}html+=`<tr><td>${label}</td>`;for(let child=0;child<10;child++){const k=`${child}_${idx}`,v=state.answers[k]||"";html+=`<td><div class="choice"><button data-k="${k}" data-v="SI" class="${v==="SI"?"active":""}">Sí</button><button data-k="${k}" data-v="NO" class="${v==="NO"?"active":""}">No</button></div></td>`}html+="</tr>"});html+="</tbody></table>";$("checklist").innerHTML=html;document.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{const k=b.dataset.k,v=b.dataset.v;state.answers[k]=state.answers[k]===v?"":v;renderChecklist()})}
+function collect(){state.children.forEach((c,i)=>{c.nombre=$(`name_${i}`)?.value??c.nombre;c.edad=$(`age_${i}`)?.value??c.edad;c.sexo=$(`sex_${i}`)?.value??c.sexo});return{id:state.id,carId:state.car.carId,visitaId:state.visitaId,tipoFicha:state.ficha,archivo:"",form:{hogar:$("hogar").value,ciudad:$("ciudad").value,fecha:$("fecha").value,informante:$("informante").value,cargo:$("cargo").value,reportes:{rep35:$("rep1").value,rep36:$("rep2").value,rep37:$("rep3").value,rep38:$("rep4").value}},children:state.children,answers:state.answers}}
+function fill(r){state.id=r.id||null;state.visitaId=r.visitaId||state.visitaId;const f=r.form||{};$("hogar").value=f.hogar||"";$("ciudad").value=f.ciudad||"";$("fecha").value=f.fecha||today();$("informante").value=f.informante||"";$("cargo").value=f.cargo||"";const reps=f.reportes||{};$("rep1").value=reps.rep35||f.rep1||"";$("rep2").value=reps.rep36||f.rep2||"";$("rep3").value=reps.rep37||"";$("rep4").value=reps.rep38||f.rep4||f.observaciones||"";state.children=r.children||state.children;state.answers=r.answers||{};renderChildren();renderChecklist();$("visitBadge").textContent=`Visita ${state.visitaId}`}
+function fieldText(form,name){try{return form.getTextField(name).getText()||""}catch(e){return""}}
+function radioValue(form,name){try{return String(form.getRadioGroup(name).getSelected()||"").toUpperCase()}catch(e){return""}}
+function normDate(v){const s=String(v||"").trim();let m=s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})$/);if(m)return`${m[3]}-${String(m[2]).padStart(2,"0")}-${String(m[1]).padStart(2,"0")}`;return""}
+const sexNames=["Texto1","Texto10","Texto2","Texto3","Texto4","Texto5","Texto6","Texto7","Texto8","Texto9"];
+async function readDynamicPDF(file){const bytes=await file.arrayBuffer();const pdf=await PDFLib.PDFDocument.load(bytes,{updateMetadata:false});const form=pdf.getForm();const names=new Set(form.getFields().map(f=>f.getName()));if(!names.has("Grupo1")||!names.has("Grupo250"))throw new Error("No es el PDF dinámico 0–3 esperado (faltan Grupo1/Grupo250).");const rec={id:null,carId:state.car.carId,visitaId:state.visitaId,tipoFicha:"0-3",archivo:file.name,form:{hogar:fieldText(form,"Texto31"),ciudad:fieldText(form,"Texto34"),fecha:normDate(fieldText(form,"Campo de fecha1")),informante:fieldText(form,"Texto32"),cargo:fieldText(form,"Texto33"),reportes:{rep35:fieldText(form,"Texto35"),rep36:fieldText(form,"Texto36"),rep37:fieldText(form,"Texto37"),rep38:fieldText(form,"Texto38")}},children:Array.from({length:10},(_,i)=>({nombre:fieldText(form,`Texto${11+i*2}`),edad:fieldText(form,`Texto${12+i*2}`),sexo:fieldText(form,sexNames[i])})),answers:{}};let count=0;for(let child=0;child<10;child++)for(let ind=0;ind<25;ind++){const v=radioValue(form,`Grupo${child*25+ind+1}`);if(v==="SI"||v==="NO"){rec.answers[`${child}_${ind}`]=v;count++}}return{rec,count}}
+$("pdfBtn").onclick=()=>$("pdfInput").click();
+$("pdfInput").onchange=async e=>{const files=[...e.target.files];if(!files.length)return;$("importList").innerHTML="";for(const file of files){try{const x=await readDynamicPDF(file);fill(x.rec);$("importList").insertAdjacentHTML("beforeend",`<div class="import-item"><b>${esc(file.name)}</b> · ${x.count} respuestas · <span style="color:#17663a">listo</span></div>`)}catch(err){$("importList").insertAdjacentHTML("beforeend",`<div class="import-item"><b>${esc(file.name)}</b> · <span style="color:#b91c1c">${esc(err.message)}</span></div>`)}}$("importStatus").textContent=`Procesados: ${files.length} PDF`;e.target.value=""}
+$("saveBtn").onclick=async()=>{try{$("saveBtn").disabled=true;$("saveStatus").textContent="Guardando...";const r=await api("save",{record:collect()});state.id=r.id;$("saveStatus").textContent=r.updated?`Actualizado ✓ ${r.id}`:`Registrado ✓ ${r.id}`}catch(e){$("saveStatus").textContent=e.message}finally{$("saveBtn").disabled=false}}
+async function loadHistory(){try{const r=await api("list",{filters:{carId:state.car.carId}});show("historyPanel");$("historyRecords").innerHTML=r.records.length?r.records.map(x=>`<div class="record"><b>${esc(x.fecha)}</b><span>${esc(x.tipoFicha)}</span><span>${esc(x.visitaId)}</span><span>${esc(x.archivo)}</span><button class="btn" data-rid="${esc(x.id)}">Abrir</button></div>`).join(""):"No hay supervisiones.";document.querySelectorAll("[data-rid]").forEach(b=>b.onclick=async()=>{const x=await api("get",{id:b.dataset.rid});state.ficha=x.record.tipoFicha||"0-3";openFicha(state.ficha);fill(x.record)})}catch(e){alert(e.message)}}
+async function loadRecent(){try{const r=await api("list");$("recentRecords").innerHTML=r.records.length?r.records.slice(0,10).map(x=>`<div class="record"><b>${esc(x.carId||"")}</b><span>${esc(x.hogar||"")}</span><span>${esc(x.fecha||"")}</span><span>${esc(x.tipoFicha||"")}</span><button class="btn" data-open-recent="${esc(x.id)}">Abrir</button></div>`).join(""):"No hay registros.";document.querySelectorAll("[data-open-recent]").forEach(b=>b.onclick=async()=>{const x=await api("get",{id:b.dataset.openRecent});if(x.record.carId){const c=await api("getCAR",{carId:x.record.carId});state.car=c.car;state.ficha=x.record.tipoFicha||"0-3";openFicha(state.ficha);fill(x.record)}})}catch(e){$("recentRecords").textContent=e.message}}
+$("searchBtn").onclick=searchCAR;$("carSearch").onkeydown=e=>{if(e.key==="Enter")searchCAR()};
+$("backHome").onclick=()=>{hide("carPage");show("homePage")};$("backCar").onclick=()=>{hide("fichaPage");show("carPage")};$("homeBtn").onclick=()=>{hide("carPage");hide("fichaPage");hide("adminPage");show("homePage");loadRecent()};
+document.querySelectorAll("[data-ficha]").forEach(b=>b.onclick=()=>openFicha(b.dataset.ficha));
+$("historyBtn").onclick=loadHistory;$("newVisitBtn").onclick=()=>{state.visitaId=newId("VIS");$("visitBadge").textContent=`Visita ${state.visitaId}`;resetForm()};
+$("adminBtn").onclick=()=>{hide("homePage");hide("carPage");hide("fichaPage");show("adminPage")};$("backAdmin").onclick=()=>{$("homeBtn").click()};
+$("masterBtn").onclick=async()=>{try{const r=await api("setupCARMaster",{adminPin:$("adminPin").value});alert(`${r.message}: ${r.rows} CAR`);$("adminLoad").click()}catch(e){alert(e.message)}};
+$("adminLoad").onclick=async()=>{try{const r=await api("adminListCAR",{adminPin:$("adminPin").value,query:$("adminSearch").value,includeArchived:true});$("adminList").innerHTML=r.cars.map(c=>`<div class="admin-row"><b>${esc(c.carId)}</b><span>${esc(c.nombre)}<br><span class="meta">${esc(c.departamento)} · ${esc(c.provincia)} · ${esc(c.distrito)}</span></span><span>${esc(c.estado)}</span><button class="btn" data-arch="${esc(c.carId)}">${c.estado==="ACTIVO"?"Archivar":"Activar"}</button></div>`).join("");document.querySelectorAll("[data-arch]").forEach(b=>b.onclick=async()=>{try{await api("adminArchiveCAR",{adminPin:$("adminPin").value,carId:b.dataset.arch,archive:b.textContent==="Archivar"});$("adminLoad").click()}catch(e){alert(e.message)}})}catch(e){alert(e.message)}};
+$("addCarBtn").onclick=async()=>{try{const car={carId:$("aId").value,ubigeo:$("aUbigeo").value,nombre:$("aNombre").value,tipo:$("aTipo").value,departamento:$("aDep").value,provincia:$("aProv").value,distrito:$("aDist").value};const r=await api("adminAddCAR",{adminPin:$("adminPin").value,car});$("adminStatus").textContent=`CAR ${r.carId} agregado ✓`;$("adminLoad").click()}catch(e){alert(e.message)}};
+$("fecha").value=today();renderChildren();renderChecklist();loadRecent();
 </script>
 </body>
 </html>
